@@ -67,11 +67,16 @@ module.exports.login = (req, res) => {
 
 module.exports.logout = (req, res, next) => {
     req.logout(function (err){
-        if(err){
-            return next(err); 
-        }
-        req.flash('success', 'GoodBye ! Please visit again !')
-        res.redirect('/campgrounds')
+        if(err){ return next(err); }
+        // ✅ flash BEFORE destroying session
+        req.flash('success', 'GoodBye ! Please visit again !');
+        req.session.save(() => {           // save flash to session first
+            req.session.destroy((err) => { // then destroy
+                if(err) console.log('Session destroy error:', err);
+                res.clearCookie('connect.sid');
+                res.redirect('/campgrounds');
+            });
+        });
     }); 
 }
 
