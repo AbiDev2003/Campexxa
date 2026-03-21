@@ -1,7 +1,6 @@
 if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
 } 
-// const PORT = process.env.PORT || 3000
 const apiRoutes = require('./routes/api');
 const path = require('path'); 
 const express = require('express')
@@ -26,21 +25,7 @@ const { MongoStore } = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campexxa';
 
-// mongoose.connect(dbUrl); 
-mongoose.connect(dbUrl)
-  .then(() => {
-    console.log("DB connected");
-
-    const PORT = process.env.PORT || 3000;
-
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-
-  })
-  .catch(err => {
-    console.log("DB ERROR:", err);
-  });
+mongoose.connect(dbUrl); 
 
 const db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'connection error: '))
@@ -191,6 +176,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render('error', { err })
 })
 
-// app.listen(PORT, "0.0.0.0", () => {
-//   console.log(`Serving on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+    console.log(`Serving on port ${PORT} !`)
+})
