@@ -1,0 +1,161 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 120px);">
+
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 650px; border-radius: 18px; background:#f8f9fa;">
+    <div class="card-body p-4 p-md-5">
+
+      <h2 class="text-center mb-4 fw-bold text-dark">Edit Campground</h2>
+
+      <form action="/campgrounds/<%= campground._id %>?_method=PUT" 
+            method="POST" 
+            novalidate 
+            class="validated-form mb-3" 
+            enctype="multipart/form-data">
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="title">Title</label>
+          <input 
+            class="form-control"
+            type="text"
+            id="title"
+            name="campground[title]"
+            value="<%= campground.title %>"
+            style="border-radius:12px; padding:10px 14px;"
+            required
+          >
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="location">Location</label>
+          <input 
+            class="form-control"
+            type="text"
+            id="location"
+            name="campground[location]"
+            value="<%= campground.location %>"
+            style="border-radius:12px; padding:10px 14px;"
+            required
+          >
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="price">Campground Price</label>
+          <div class="input-group">
+              <span class="input-group-text bg-light">₹</span>
+            <input 
+              type="text"
+              class="form-control"
+              id="price"
+              name="campground[price]"
+              value="<%= campground.price %>"
+              style="border-radius:0 12px 12px 0; padding:10px 14px;"
+              required
+            >
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="description">Description</label>
+          <textarea 
+            class="form-control"
+            id="description"
+            name="campground[description]"
+            rows="3"
+            style="border-radius:12px; padding:10px 14px;"
+            maxlength="500"
+            required
+          ><%= campground.description %></textarea>
+          <p class="text-muted small" id="descCount">0 / 500</p>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Drag & Drop Upload Box -->
+        <div 
+          data-droparea="editImages"
+          data-existing="<%= campground.images.length %>"
+          class="border border-2 border-secondary bg-light d-flex flex-column justify-content-center align-items-center mb-3"
+          style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
+        >
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
+          <p class="text-muted small drop-subtext">or click to select files</p>
+        </div>
+        
+        <div class="mini-preview-grid mb-3" data-preview="editImages"></div>
+        
+        <!-- Hidden actual file input -->
+        <input 
+          type="file" 
+          name="image"
+          multiple
+          accept=".jpg,.jpeg,.png"
+          class="form-control"
+          style="display:none;"
+          data-fileinput="editImages"
+        />
+
+        <!-- Delete Existing Images -->
+        <% if (campground.images && campground.images.length > 0) { %>
+        <div class="mb-3">
+          <p class="form-label fw-semibold">Delete Existing Images</p>
+
+          <!-- Select All -->
+          <div class="form-check mb-2">
+            <input type="checkbox" id="selectAllImages" class="form-check-input" data-selectall="delete-checkbox" >
+            <label class="form-check-label" for="selectAllImages">Select All</label>
+          </div>
+
+          <!-- Image Grid -->
+          <div class="row g-3" id="imageGrid">
+            <% campground.images.forEach(function(img, i) { %>
+              <div class="col-md-4 col-sm-6 col-6">
+                <div class="text-center">
+
+                  <!-- Thumbnail: prefer thumbnail if available, else url -->
+                  <img 
+                    src="<%= img.thumbnail || img.url %>" 
+                    crossorigin="anonymous"
+                    class="img-fluid rounded img-thumbnail"
+                    alt="camp image <%= i %>"
+                  >
+
+                  <!-- Checkbox -->
+                  <div class="form-check-inline mt-1">
+                    <input type="checkbox" class="form-check-input delete-checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>" >
+                  </div>
+
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Submit -->
+        <button 
+          class="btn btn-info w-100 py-2 fw-bold"
+          style="border-radius:12px;"
+        >
+          Update Campground
+        </button>
+
+      </form>
+
+      <a href="/campgrounds/<%= campground._id %>" class="d-block text-center mt-2">
+        Back to Campground
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const MAPBOX_TOKEN = "<%= process.env.MAPBOX_TOKEN %>";
+</script>

@@ -1,0 +1,107 @@
+/* FOOTER FIX — Modern dark contrast */
+.footer-modern {
+  background: linear-gradient(90deg, #565c63, #676c72) !important;
+  color: white !important;
+  padding: 1.5rem 0;
+  margin-top: 4rem;
+}
+
+/* section titles (h3, h5, or any heading) */
+.footer-modern h3,
+.footer-modern h5 {
+  color: #ffffff !important;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* descriptions and text */
+.footer-modern p,
+.footer-modern span {
+  color: #c9ccd1 !important;
+  line-height: 1.6;
+}
+
+/* links */
+.footer-modern a {
+  color: #d1d5db !important;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+
+.footer-modern a:hover {
+  color: #ffffff !important;
+}
+
+/* footer link list */
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.footer-links li a {
+  font-size: 0.8rem;
+}
+
+/* footer-link class (like "Back to top") */
+.footer-link {
+  display: inline-block;
+  margin-top: 0.3rem;
+}
+
+/* social icons */
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2d2f34;
+  transition: all .2s ease;
+}
+
+.social-icon:hover {
+  background: #3d3f44;
+  transform: translateY(-2px);
+}
+
+.social-icon svg {
+  fill: #d1d5db;
+  transition: fill .2s ease;
+}
+
+.social-icon:hover svg {
+  fill: #ffffff;
+}
+
+/* location icon styling */
+.footer-modern svg[width="16"] {
+  fill: #d1d5db;
+  flex-shrink: 0;
+  margin-top: 0.7px;
+}
+
+/* divider line */
+.footer-modern .footer-divider {
+  border-top: 1px solid #b6b5b5;
+  margin: 1rem 0 0.7rem;
+}
+
+/* copyright */
+.footer-modern .footer-copy {
+  color: #c2c2c3 !important;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 0.7rem;
+}
+
+/* text-muted override in footer */
+.footer-modern .text-muted {
+  color: #c9ccd1 !important;
+}
+
+/* text-light override in footer */
+.footer-modern .text-light {
+  color: #ffffff !important;
+}

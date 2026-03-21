@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 120px);">
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 650px; border-radius: 18px; background:#d9d9d9;">
+    
+    <div class="card-body p-4 p-md-5">
+
+      <h2 class="text-center mb-4 fw-bold text-dark">Create New Campground</h2>
+
+      <form action="/campgrounds" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+
+        <!-- Title -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="title">Title</label>
+          <input class="form-control" type="text" id="title" name="campground[title]" required style="border-radius:12px; padding:10px 14px;">
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="location">Location</label>
+          <input class="form-control" type="text" id="location" name="campground[location]" required style="border-radius:12px; padding:10px 14px;">
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="price">Campground Price</label>
+          <div class="input-group">
+            <!-- <span id="currencySymbol" class="input-group-text bg-light" style="border-radius:12px 0 0 12px;"></span> -->
+             <!-- currency drop down -->
+            <span class="input-group-text bg-light">₹</span>
+            <input type="text" class="form-control" id="price" name="campground[price]" placeholder="0" required style="border-radius:0 12px 12px 0; padding:10px 14px;">
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold" for="description">Description</label>
+          <textarea class="form-control" id="description" name="campground[description]" rows="3" required style="border-radius:12px; padding:10px 14px;"></textarea>
+          <div class="valid-feedback">Looks good!</div>
+        </div>
+
+        <!-- Drag & Drop Upload Box -->
+        <div 
+          class="border border-2 border-secondary bg-light d-flex flex-column justify-content-center align-items-center mb-3"
+          style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
+          data-droparea="campImages"
+        >
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
+          <p class="text-muted small drop-subtext">or click to select files</p>
+        </div>
+
+        <p class="text-muted small mb-2">Maximum 15 images can be uploaded.</p>
+
+        <!-- Preview Grid -->
+        <div class="mini-preview-grid mb-3" data-preview="campImages"></div>
+
+        <!-- Hidden actual file input -->
+        <input 
+          type="file" 
+          name="image" 
+          multiple 
+          accept=".jpg,.jpeg,.png" 
+          class="form-control" 
+          style="display:none;" 
+          data-fileinput="campImages" 
+        />
+
+        <!-- Submit -->
+        <button class="btn btn-success w-100 py-2 fw-bold mt-2" style="border-radius:12px;">
+          Add Campground
+        </button>
+
+        <a 
+          href="/campgrounds" 
+          class="btn btn-danger w-100 py-2 fw-bold mt-2"
+          style="border-radius: 12px;"
+        >
+          Cancel
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const MAPBOX_TOKEN = "<%= process.env.MAPBOX_TOKEN %>";
+</script>

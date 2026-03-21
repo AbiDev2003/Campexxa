@@ -1,0 +1,115 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+<div class="row camp-show-row">
+  <div class="col-lg-6 col-12 camp-left">
+    <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <% campground.images.forEach((img, i) => { %>
+                <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                    <img crossorigin="anonymous" class="d-block w-100" style="height: 350px; object-fit: cover; border-radius: 8px;" src="<%= img.url %>" alt="spot picture" data-gallery="camp-<%= campground._id %>" data-full="<%= img.url %>" >
+                </div>
+            <% }) %>
+        </div>
+
+        <% if (campground.images.length > 1) { %>
+            <a class="carousel-control-prev" href="#campgroundCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
+
+            <a class="carousel-control-next" href="#campgroundCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only"></span>
+            </a>
+        <% } %>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="card-body d-flex justify-content-between align-items-center">
+          <h5 class="card-title" style="font-size: 1.9rem; letter-spacing: 0.3px;"><%= campground.title  %></h5>
+          <!-- Save Button -->
+          <button class="btn p-0 border-0 bg-transparent" style="cursor: pointer;">
+            <!-- Outline Bookmark -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+            </svg>
+          </button>
+        </div>
+        <p class="card-text" >
+          <span class="fw-semibold">✍️ Description: </span>
+          <%= campground.description  %>
+        </p>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item text-muted">  
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" fill="#ef4444" stroke="#dc2626"></path>
+              <circle cx="12" cy="10" r="3" fill="white" stroke="white"></circle>
+          </svg>
+          <%= campground.location %></li>
+        <li class="list-group-item text-muted">👤 Posted by: <%= campground.auther.fullName %></li>
+        <li class="list-group-item">
+          💰
+          <small id="originalPrice" class="text-muted">
+            Original: <%= campground.currencySymbol %> <%= campground.price %> <%= campground.currency %> /person
+          </small>
+        </li>
+      </ul>
+
+      <% if(currentUser && campground.auther.equals(currentUser._id)) { %>
+        <div class="card-body">
+          <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-info">Edit</a>
+          <form class="d-inline" action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      <% } %>
+      <div class="card-footer text-body-secondary">
+        📅 Posted on: <%= formattedDate %>
+      </div>
+    </div> 
+  </div>
+
+
+  <div class="col-lg-6 col-12 camp-right">
+    <div id="map"></div>
+
+    <a id="openGoogleMapsBtn" class="camp-dir-btn">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L4.5 20.29L5.21 21L12 18L18.79 21L19.5 20.29L12 2Z" fill="white"/>
+        <path d="M12 2L12 18" stroke="white" stroke-width="2"/>
+        <path d="M12 8L16 12L12 16" stroke="white" stroke-width="2"/>
+      </svg>
+      Get Directions
+    </a>
+
+
+    <!-- Review Summary Card -->
+    <div class="card p-3 mt-3" style="border-radius: 8px;">
+      <h5 class="fw-bold mb-1">Reviews</h5>
+
+      <!-- big-ish average and stars (starability css handles stars) -->
+      <div class="d-flex align-items-center mb-2">
+        <span class="fs-2 fw-bold me-3"><%= avgRating %></span>
+        <p class="starability-result" data-rating="<%= Math.round(avgRating) %>"></p>
+      </div>
+
+      <p class="text-muted mb-2"><%= totalReviews %> reviews</p>
+
+      <a href="/campgrounds/<%= campground._id %>/reviews" class="fw-bold text-primary">
+        See all reviews →
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const mapToken = '<%-process.env.MAPBOX_TOKEN %>'; 
+  const campground =  <%- JSON.stringify(campground) %>;
+</script>
+
+
+<script src="/javascripts/showPageMap.js"></script>
+
+

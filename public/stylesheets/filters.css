@@ -1,0 +1,66 @@
+/* not in used right now !! */
+
+
+/* 🔥 MOBILE FILTER DRAWER */
+.mobile-filters-drawer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 2000;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-filters-drawer.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.mobile-filters-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 70%;
+  background: white;
+
+  padding: 15px;
+  overflow-y: auto;
+
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.mobile-filters-drawer.active .mobile-filters-content {
+  transform: translateX(0);
+}
+
+.filters-sidebar {
+  position: sticky;
+  top: 90px;   
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+/* 🔥 MOBILE FILTER OVERLAY */
+@media (max-width: 992px) {
+
+  #mobileFilters {
+    position: fixed;
+    top: 70px;             /* below navbar */
+    left: 0;
+    height: calc(100vh - 70px);
+    width: 70%;
+
+    background: white;
+    z-index: 2000;
+
+    padding: 15px;
+    overflow-y: auto;
+
+    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+  }
+
+}

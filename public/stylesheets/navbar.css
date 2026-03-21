@@ -1,0 +1,77 @@
+.campex-nav {
+  /* background: linear-gradient(90deg, #8b50f2, #27428f) !important;
+  color: white !important; */
+  /* background: linear-gradient(90deg, #3a3f47, #575c63) !important;
+  color: white !important; */
+  background: linear-gradient(90deg, #727a84, #9299a2) !important;
+  color: white !important;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1030;
+}
+
+.campex-nav-link {
+  color: #e0e7ff !important;
+}
+
+.campex-nav-link:hover {
+  color: white !important;
+}
+
+body{
+  padding-top: 70px;
+}
+
+/* #navbarNearMeBtn{
+  margin-left: 10px;
+} */
+#global-search-form{
+  margin-right: 10px;
+}
+
+@media (max-width: 992px) {
+  .campgrounds-layout {
+    grid-template-columns: 1fr;   /* 💥 KILLS SIDEBAR WIDTH */
+  }
+  .filters-sidebar {
+    position: static;   /* Prevent sticky weirdness */
+    height: auto;
+  }
+  #global-search-form{
+    margin-bottom: 12px;
+    /* text-align: center; */
+  }
+  .nav-link{
+    text-align: center;
+  }
+  .nav-link:hover{
+    background: rgb(104, 104, 104);
+  }
+  
+  /* .navbar-collapse {
+    padding-top: 10px;
+  }
+
+  .navbar-collapse .navbar-nav,
+  .navbar-collapse form,
+  .navbar-collapse button {
+    margin-bottom: 12px;
+  } */
+}
+
+/* Dark mode */
+/* body.dark-mode .campex-light-nav {
+  background: #1f2937 !important;
+  color: #f9fafb !important;
+  border-bottom: none;
+}
+
+body.dark-mode .campex-nav-link {
+  color: #e5e7eb !important;
+}
+
+body.dark-mode .campex-nav-link:hover {
+  color: #93c5fd !important;
+} */

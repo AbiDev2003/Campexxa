@@ -1,0 +1,94 @@
+body {
+    height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+    background-size: cover;
+    background-position: center;
+    text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+}
+.cover-container {
+    max-width: 80vw;
+}
+.nav-link {
+    padding: 0.25rem 0;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    margin-left: 1rem;
+    border-bottom: 0.25rem solid transparent;
+}
+.nav-link:hover{
+    color: rgba(255,255,255,0.5);
+    border-bottom-color:rgba(255,255,255,0.5);
+}
+.nav-link.active {
+    color: white;
+    border-bottom-color:white;
+}
+.btn-secondary, .btn-secondary:hover{
+    color: #333;
+    text-shadow: none;
+}
+
+/* Bootstrap Navbar Hamburger Styles */
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.5);
+}
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.25);
+}
+
+.site-logo {
+  width: 200px;
+  transition: 0.3s ease;
+  filter: brightness(1);
+}
+
+.site-logo:hover {
+  filter:
+    brightness(1.2)
+    drop-shadow(0 0 12px rgba(255,255,255,0.3));
+}
+
+
+/* Mobile menu styling - Full width transparent */
+@media (max-width: 767px) {
+    .navbar-collapse {
+        background: transparent;
+        padding: 1rem 0;
+        margin-top: 0.5rem;
+        width: 100%;
+        transition: all 0.4s ease-in-out;
+        overflow: hidden;
+    }
+    
+    .navbar-collapse.collapsing {
+        transition: height 0.4s ease-in-out;
+    }
+    
+    .navbar-nav {
+        align-items: center !important;
+        width: 100%;
+    }
+    
+    .nav-item {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-link {
+        margin: 0.5rem 0;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        display: block;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.8);
+        font-weight: 800;
+    }
+    .site-logo {
+        max-width: 150px;
+    }
+
+}

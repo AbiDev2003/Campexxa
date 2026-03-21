@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-content">
+
+    <h2 class="auth-title">Reset Password</h2>
+    <p class="auth-sub">Enter your new password</p>
+
+    <form action="/reset/<%= token %>" method="POST" id="registerForm">
+      <%- include('../partials/passwordFields', {
+        passwordLabel: "New Password",
+        passwordPlaceholder: "Enter new password",
+        confirmLabel: "Confirm New Password",
+        confirmPlaceholder: "Confirm new password"
+      }) %>
+      <a href="/reset/<%=token %>/skip" class="text-center">Skip for now</a>
+      <button class="auth-btn-primary mt-3" type="submit">Reset Password</button>
+    </form>
+
+  </div>
+  </div>
+</div>
+
+
+

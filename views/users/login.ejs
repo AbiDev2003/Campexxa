@@ -1,0 +1,48 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-brand">
+      <img src="/images/logo.png" alt="Campexxa" class="auth-brand-img" />
+    </div>
+    <div class="auth-content">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-sub">Login to continue exploring</p>
+      <form action="/login" method="POST" class="auth-form" id="loginForm">
+        <label class="auth-label fw-semibold" for="username"
+          >Username or Email</label
+        >
+        <input
+          class="auth-input"
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter your username or email"
+          required
+        />
+
+        <div class="auth-password-row mt-3">
+          <label class="auth-label fw-semibold" for="password">Password</label>
+          <a class="auth-forgot" href="/forgot-password">Forgot password?</a>
+        </div>
+        <div class="auth-input-wrapper">
+          <input
+            class="auth-input auth-password"
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+          />
+          <img src="/images/eye.png" class="auth-eye auth-toggle" />
+        </div>
+        <button class="auth-btn-primary" type="submit">Log in</button>
+      </form>
+      <%- include('../partials/oauthButtons', {actionText: 'continue'}) %>
+      <div class="auth-footer mt-3">
+        <span>New here?</span>
+        <a href="/register">Create an account</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,90 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 120px);">
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 650px; border-radius: 18px; background:#f8f9fa;">
+    <div class="card-body p-4 p-md-5">
+
+      <h2 class="text-center mb-4 fw-bold text-dark">Leave a Review</h2>
+
+      <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+        
+        <!-- Stars -->
+        <fieldset class="starability-grow mb-3">
+          <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+          <input type="radio" id="rate1" name="review[rating]" value="1" />
+          <label for="rate1" title="Terrible">1 star</label>
+
+          <input type="radio" id="rate2" name="review[rating]" value="2" />
+          <label for="rate2" title="Not good">2 stars</label>
+
+          <input type="radio" id="rate3" name="review[rating]" value="3" />
+          <label for="rate3" title="Average">3 stars</label>
+
+          <input type="radio" id="rate4" name="review[rating]" value="4" />
+          <label for="rate4" title="Very good">4 stars</label>
+
+          <input type="radio" id="rate5" name="review[rating]" value="5" />
+          <label for="rate5" title="Amazing">5 stars</label>
+        </fieldset>
+
+        <!-- Text -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Your Review</label>
+          <textarea 
+            class="form-control" 
+            id="reviewBody"
+            name="review[body]" 
+            rows="4"
+            required
+            style="border-radius: 12px; padding: 12px;"
+            maxlength="500"
+          ></textarea>
+          <p class="text-muted small" id="reviewBodyCount">0 / 500</p>
+        </div>
+
+        <!-- Drag & Drop Upload Box -->
+        <div 
+          class="border border-2 border-secondary bg-light d-flex flex-column justify-content-center align-items-center mb-3"
+          style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
+          data-droparea="reviewImages"
+        >
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
+          <p class="text-muted small drop-subtext">or click to select files</p>
+        </div>
+        <p class="text-muted small mb-2">Maximum 5 images allowed. Existing: 0</p>
+        <!-- Preview Grid -->
+        <div class="mini-preview-grid mb-3" data-preview="reviewImages"></div>
+        <!-- Hidden actual file input -->
+        <input 
+          type="file" 
+          name="reviewImages" 
+          multiple
+          accept=".jpg,.jpeg,.png"
+          class="form-control"
+          style="display:none;"
+          data-fileinput="reviewImages"
+        />
+
+
+        <button 
+          class="btn btn-success w-100 py-2 fw-bold"
+          style="border-radius: 12px;"
+        >
+          Submit Review
+        </button>
+
+        <a 
+          href="/campgrounds/<%= campground._id %>/reviews" 
+          class="btn btn-danger w-100 mt-2 fw-bold"
+          style="border-radius: 12px;"
+        >
+          Cancel
+        </a>
+
+      </form>
+
+    </div>
+  </div>
+</div>

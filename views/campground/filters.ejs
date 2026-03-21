@@ -1,0 +1,125 @@
+<aside class="filters-sidebar">
+
+    <!-- left filter sidebar -->
+    <h4 class="text-bold mb-4">Filters</h4>
+
+    <!-- location dynamic searching -->
+    <div class="filter-section">
+      <h6 class="filter-title">
+        LOCATIONS
+      </h6>
+      <input type="text" id="locationFilterInput" class="form-control mb-2" placeholder="Search location..." autocomplete="off" />
+      <div id="selectedLocations" class="mb-2"></div>
+      <div id="locationOptions"></div>
+    </div>
+
+    <!-- date posted filter (linkdin style, can change url with seconds) -->
+    <div class="filter-section mt-4">
+      <h6 class="filter-title">DATE POSTED</h6>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="86400">
+        <label class="form-check-label">Last 24 hours</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="604800">
+        <label class="form-check-label">Last 7 days</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="2592000">
+        <label class="form-check-label">Last 30 days</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="7776000">
+        <label class="form-check-label">Last 3 months</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="15552000">
+        <label class="form-check-label">Last 6 months</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input date-filter" type="checkbox" value="31536000">
+        <label class="form-check-label">Last 1 year</label>
+      </div>
+    </div>
+
+    <!-- ratings filter -->
+    <div class="filter-section mt-4">
+      <h6 class="filter-title">RATINGS</h6>
+
+      <div class="form-check">
+        <input class="form-check-input rating-filter" type="checkbox" value="5">
+        <label class="form-check-label"><span class="text-warning fs-5" >★★★★★</span></label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input rating-filter" type="checkbox" value="4">
+        <label class="form-check-label"><span class="text-warning fs-5">★★★★</span><span class="fs-5">★</span> & Up</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input rating-filter" type="checkbox" value="3">
+        <label class="form-check-label"><span class="text-warning fs-5">★★★</span><span class="fs-5">★★</span> & Up</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input rating-filter" type="checkbox" value="lt3">
+        <label class="form-check-label"><span class="text-warning fs-5">★★</span><span class="fs-5">★★★</span> & Down</label>
+      </div>
+    </div>
+
+    <!-- PRICE FILTER -->
+    <div class="filter-section mt-4">
+      <h6 class="filter-title">PRICE (Original Pricings)</h6>
+
+      <div class="d-flex gap-2 mb-2">
+        <input type="number" id="priceMin" class="form-control" placeholder="Min" min="0" />
+        <input type="number" id="priceMax" class="form-control" placeholder="Max" min="0" />
+      </div>
+      <button id="addPriceRange" class="btn btn-outline-primary btn-sm w-100 mb-2" >
+        Add range
+      </button>
+      <!-- Pills (reuse location styles) -->
+      <div id="selectedPrices" class="mb-2"></div>
+      <button id="applyPriceFilter" class="btn btn-primary btn-sm w-100">
+        Apply
+      </button>
+    </div>
+
+    <!-- filter by distance -->
+    <div class="filter-section mt-4">
+      <h6 class="filter-title">DISTANCE</h6>
+
+      <div class="form-check">
+        <input class="form-check-input distance-filter" type="checkbox" value="5">
+        <label class="form-check-label">Within 5 km</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input distance-filter" type="checkbox" value="10">
+        <label class="form-check-label">Within 10 km</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input distance-filter" type="checkbox" value="50">
+        <label class="form-check-label">Within 50 km</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input distance-filter" type="checkbox" value="100">
+        <label class="form-check-label">Within 100 km</label>
+      </div>
+
+      <div class="form-check">
+        <input class="form-check-input distance-filter" type="checkbox" value="200">
+        <label class="form-check-label">Within 200 km</label>
+      </div>
+    </div>
+
+  </aside>
+  <script src="/javascripts/filters.js"></script>
