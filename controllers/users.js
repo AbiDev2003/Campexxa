@@ -53,9 +53,6 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.renderLogin = (req, res) => {
-    if(req.isAuthenticated()){
-      return res.redirect('/campgrounds');
-    }
     res.render('users/login'); 
 }
 
@@ -70,14 +67,12 @@ module.exports.login = (req, res) => {
 
 module.exports.logout = (req, res, next) => {
     req.logout(function (err){
-        if(err){ return next(err); }
-        req.session.destroy((err) => {
-            if(err) console.log('Session destroy error:', err);
-            res.clearCookie('connect.sid');
-            req.flash('success', 'GoodBye ! Please visit again !');
-            res.redirect('/campgrounds');
-        });
-    }); //we will destry the session too, after logout
+        if(err){
+            return next(err); 
+        }
+        req.flash('success', 'GoodBye ! Please visit again !')
+        res.redirect('/campgrounds')
+    }); 
 }
 
 // FORGOT PASSWORD FLOW
