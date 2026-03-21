@@ -25,7 +25,10 @@ const { MongoStore } = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campexxa';
 
-mongoose.connect(dbUrl); 
+mongoose.connect(dbUrl, {
+  tls: true,
+  tlsAllowInvalidCertificates: false,
+}); 
 
 const db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'connection error: '))
