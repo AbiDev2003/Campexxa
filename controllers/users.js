@@ -104,7 +104,7 @@ module.exports.handleForgotPassword = async (req, res) => {
 
     const protocol = req.protocol;
     const host = req.get('host');
-    const resetURL = `${protocol}://${host}/reset/${rawToken}`;
+    const resetURL = process.env.CLIENT_URL ? `${process.env.CLIENT_URL}/reset/${rawToken}` : `${protocol}://${host}/reset/${rawToken}`;
 
     // send mail using nodemailer ************************************************************
 
