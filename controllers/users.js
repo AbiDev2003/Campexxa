@@ -2,6 +2,10 @@ const User = require('./../models/user');
 const {userSchema} = require('./../schemas');
 const crypto = require('crypto');
 const nodemailer = require("nodemailer");
+const { Resend } = require('resend') //for resend mail service ! 
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -106,56 +110,83 @@ module.exports.handleForgotPassword = async (req, res) => {
     const host = req.get('host');
     const resetURL = `${protocol}://${host}/reset/${rawToken}`;
 
-    console.log("Reset url is: ", resetURL); 
-    console.log('Protocol:', protocol);
-    console.log('Host:', host);
-
     // send mail using nodemailer ************************************************************
 
     const sendMail = async (email) => {
-      return await transporter.sendMail({
-        from: process.env.EMAIL_USER,
+    //   return await transporter.sendMail({
+    //     from: process.env.EMAIL_USER,
+    //     to: email,
+    //     subject: "Reset Password Campexxa",
+    //     // text: "Hi, msg for nodemailer",
+    //     html: `
+    //   <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+        
+    //     <h2 style="color: #333;">Hello 👋</h2>
+        
+    //     <p style="font-size: 16px; color: #555;">
+    //       Click the button below to continue,
+    //       <br/>
+    //       or click on the link below.
+    //     </p>
+
+    //     <a href="${resetURL}" 
+    //       style="
+    //         display: inline-block;
+    //         padding: 12px 24px;
+    //         margin: 20px 0;
+    //         background-color: orange;
+    //         color: white;
+    //         text-decoration: none;
+    //         border-radius: 6px;
+    //         font-weight: bold;
+    //         font-size: 16px;
+    //       ">
+    //       Click here
+    //     </a>
+
+    //     <p style="font-size: 14px; color: #777; word-break: break-all;">
+    //       ${resetURL}
+    //     </p>
+
+    //   </div>
+    // `
+    //   });
+      await resend.emails.send({
+        from: 'onboarding@resend.dev', // works without domain verification!
         to: email,
         subject: "Reset Password Campexxa",
-        // text: "Hi, msg for nodemailer",
         html: `
-      <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
-        
-        <h2 style="color: #333;">Hello 👋</h2>
-        
-        <p style="font-size: 16px; color: #555;">
-          Click the button below to continue,
-          <br/>
-          or click on the link below.
-        </p>
-
-        <a href="${resetURL}" 
-          style="
-            display: inline-block;
-            padding: 12px 24px;
-            margin: 20px 0;
-            background-color: orange;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 16px;
-          ">
-          Click here
-        </a>
-
-        <p style="font-size: 14px; color: #777; word-break: break-all;">
-          ${resetURL}
-        </p>
-
-      </div>
-    `
+          <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+            <h2 style="color: #333;">Hello 👋</h2>
+            <p style="font-size: 16px; color: #555;">
+              Click the button below to continue,
+              <br/>
+              or click on the link below.
+            </p>
+            <a href="${resetURL}" 
+              style="
+                display: inline-block;
+                padding: 12px 24px;
+                margin: 20px 0;
+                background-color: orange;
+                color: white;
+                text-decoration: none;
+                border-radius: 6px;
+                font-weight: bold;
+                font-size: 16px;
+              ">
+              Click here
+            </a>
+            <p style="font-size: 14px; color: #777; word-break: break-all;">
+              ${resetURL}
+            </p>
+          </div>
+        `
       });
     }
     const info = await sendMail(user.email)
     req.flash('success', genericMsg); 
     res.redirect('/login'); 
-    
   } 
   catch (err) {
     console.error("FORGOT-PASSWORD ERROR:", err);
