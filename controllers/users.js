@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const nodemailer = require("nodemailer");
 const { Resend } = require('resend') //for resend mail service ! 
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// const resend = new Resend(process.env.RESEND_API_KEY)
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -151,6 +151,7 @@ module.exports.handleForgotPassword = async (req, res) => {
     //   </div>
     // `
     //   });
+      const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
         from: 'onboarding@resend.dev', // works without domain verification!
         to: email,
