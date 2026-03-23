@@ -4,16 +4,6 @@ const crypto = require('crypto');
 const nodemailer = require("nodemailer");
 const { Resend } = require('resend') //for resend mail service ! 
 
-// const resend = new Resend(process.env.RESEND_API_KEY)
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 module.exports.renderRegister = (req, res) => {
     res.render('users/register'); 
 }
@@ -110,47 +100,9 @@ module.exports.handleForgotPassword = async (req, res) => {
     const host = req.get('host');
     const resetURL = `${protocol}://${host}/reset/${rawToken}`;
 
-    // send mail using nodemailer ************************************************************
+    // send mail using resend ************************************************************
 
     const sendMail = async (email) => {
-    //   return await transporter.sendMail({
-    //     from: process.env.EMAIL_USER,
-    //     to: email,
-    //     subject: "Reset Password Campexxa",
-    //     // text: "Hi, msg for nodemailer",
-    //     html: `
-    //   <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
-        
-    //     <h2 style="color: #333;">Hello 👋</h2>
-        
-    //     <p style="font-size: 16px; color: #555;">
-    //       Click the button below to continue,
-    //       <br/>
-    //       or click on the link below.
-    //     </p>
-
-    //     <a href="${resetURL}" 
-    //       style="
-    //         display: inline-block;
-    //         padding: 12px 24px;
-    //         margin: 20px 0;
-    //         background-color: orange;
-    //         color: white;
-    //         text-decoration: none;
-    //         border-radius: 6px;
-    //         font-weight: bold;
-    //         font-size: 16px;
-    //       ">
-    //       Click here
-    //     </a>
-
-    //     <p style="font-size: 14px; color: #777; word-break: break-all;">
-    //       ${resetURL}
-    //     </p>
-
-    //   </div>
-    // `
-    //   });
       const resend = new Resend(process.env.RESEND_API_KEY)
       await resend.emails.send({
         from: 'onboarding@resend.dev', // works without domain verification!
