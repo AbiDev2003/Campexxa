@@ -47,9 +47,28 @@
       <div class="navbar-nav ms-3">
         <% if(!currentUser){ %>
           <a class="nav-link campex-nav-link" href="/login">Login</a>
-          <!-- <a class="nav-link" href="/register">Register</a> -->
         <% } else { %>
-          <a class="nav-link campex-nav-link" href="/logout">Logout</a>
+          <div class="dropdown">
+            <button class="btn d-flex align-items-center gap-0.5 dropdown-toggle" data-bs-toggle="dropdown">
+              <!-- Profile Circle -->
+              <% if (currentUser.profileImage && currentUser.profileImage.url) { %>
+                <img 
+                  src="<%= currentUser.profileImage.url %>" 
+                  style="width:32px; height:32px; border-radius:50%; object-fit:cover;"
+                >
+              <% } else { %>
+                <div style="width:32px; height:32px; border-radius:50%; background:#000; color:#fff; display:flex; align-items:center; justify-content:center;">
+                  <%= currentUser.profileInitial %>
+                </div>
+              <% } %>
+              <span class="nav-link campex-nav-link"><%= currentUser.username %></span>
+            </button>
+            <ul class="dropdown-menu p-1">
+              <li>
+                <a class="dropdown-item" href="/dashboard">Dashboard</a>
+              </li>
+            </ul>
+          </div>
         <% } %>
       </div>
     </div>
