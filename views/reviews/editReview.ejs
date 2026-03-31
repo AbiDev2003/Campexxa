@@ -8,6 +8,7 @@
       <h2 class="text-center mb-4 fw-bold text-dark">Edit Review</h2>
 
       <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=PUT" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="redirectTo" value="<%= redirectTo %>">
         <!-- Stars -->
         <fieldset class="starability-grow mb-3">
           <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
