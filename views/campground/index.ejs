@@ -47,58 +47,12 @@
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
         <% for(let campground of campgrounds){ %>
           <div class="col">
-            <div class="card card-hover h-100"  style="border:none; border-radius:12px; background-color:white; transition:box-shadow 0.3s ease, transform 0.3s ease;">
-
-              <% if(campground.images.length){ %>
-                <img crossorigin="anonymous" class="card-img-top" style="height:200px; object-fit:cover;"
-                    alt="campground image" 
-                    src="<%= campground.images[0].url %>">
-              <% } else { %>
-                <img crossorigin="anonymous" class="card-img-top" style="height:200px; object-fit:cover;"
-                    alt="campground image" 
-                    src="https://via.placeholder.com/400x250?text=No+Image">
-              <% } %>
-
-            <div class="card-body camp-card">
-
-              <!-- TITLE + STARS + RATING -->
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                
-                <h5 class="fw-semibold mb-0"><%= campground.title %></h5>
-
-                <div class="d-flex align-items-center gap-2">
-                  <p class="starability-result mb-0" 
-                    data-rating="<%= Math.round(campground.avgRating || 0) %>"></p>
-
-                  <span class="text-muted fw-semibold"><%= campground.avgRating %></span>
-                </div>
-
-              </div>
-
-              <!-- LOCATION -->
-              <p class="text-muted small mb-2 d-flex align-items-center gap-1 pt-2 pb-2">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" fill="#ef4444" stroke="#dc2626"></path>
-                  <circle cx="12" cy="10" r="3" fill="white" stroke="white"></circle>
-              </svg>
-                <%= campground.location %>
-              </p>
-
-              <!-- DESCRIPTION -->
-              <p class="card-text text-truncate pb-2"><%= campground.description %></p>
-
-              <!-- CTA BUTTON -->
-              <a class="btn camp-view-btn w-100 fw-bold py-2"
-                href="/campgrounds/<%= campground._id %>">
-                View <%= campground.title %> 
-                <!-- <span class="camp-ext-icon">↗</span> -->
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
-              </a>
-            </div>
-            </div>
+            <%- include('../partials/campCard', { camp: campground }) %>
           </div>
         <% } %>
       </div>
+
+      <%- include('../partials/loadInfinityScroll', { hasMore, page, tab: '' }) %>
 
     </div>
   </main>
@@ -127,7 +81,47 @@
       filtersPanel.classList.remove("show"); 
     }
   })
+</script>
 
+<script>
+let page = <%= page %>;
+let hasMore = <%= hasMore %>;
+let loading = false;
+
+const btn = document.getElementById('loadMoreBtn');
+const container = document.querySelector('.row');
+
+if (btn) {
+  btn.addEventListener('click', async () => {
+    if (loading || !hasMore) return;
+
+    loading = true;
+    btn.textContent = "Loading...";
+
+    page++;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+
+    const res = await fetch(url, {
+      headers: { 'Accept': 'application/json' }
+    });
+
+    const data = await res.json();
+
+    // ✅ append HTML directly
+    container.insertAdjacentHTML('beforeend', data.html);
+
+    hasMore = data.hasMore;
+    loading = false;
+
+    if (!hasMore) {
+      btn.remove();
+    } else {
+      btn.textContent = "Load More";
+    }
+  });
+}
 </script>
 
 <script src="/javascripts/clusterMap.js"></script>
