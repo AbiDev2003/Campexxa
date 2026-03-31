@@ -7,6 +7,7 @@ module.exports.createReview = async (req, res) => {
     const campground = await Campground.findById(campId);
     const newReview = new Review(req.body.review);
     newReview.auther = req.user._id;
+    newReview.campground = campId; 
     // ⭐ add uploaded images
     if (req.files) {
         newReview.images = req.files.map(f => ({
@@ -26,8 +27,9 @@ module.exports.deleteReview = async (req, res, next) => {
     const {campId, reviewId} = req.params; 
     const currCampground = await Campground.findByIdAndUpdate(campId, { $pull: { reviews: reviewId }});
     await Review.findByIdAndDelete(reviewId); 
+    const redirectURL = req.body.redirectTo || `/campgrounds/${currCampground._id}/reviews`
     req.flash('success', 'Successfully deleted review !');
-    res.redirect(`/campgrounds/${currCampground._id}/reviews`)
+    res.redirect(redirectURL); 
 }
 
 // Render full reviews dashboard
@@ -38,7 +40,7 @@ module.exports.showAllReviews = async (req, res) => {
         .populate({
             path: "reviews",
             populate: { path: "auther" }
-        });
+        })
 
     if (!campground) {
         req.flash("error", "Campground not found!");
@@ -123,7 +125,6 @@ module.exports.showAllReviews = async (req, res) => {
             `${dates[dates.length - 1].toLocaleDateString("en-US", opts)}`;
     }
 
-    
     //  SEND TO FRONTEND
     
     res.render("reviews/index", {
@@ -166,7 +167,7 @@ module.exports.renderEditReview = async (req, res) => {
         return res.redirect(`/campgrounds/${campId}/reviews`);
     }
 
-    res.render('reviews/editReview', { campground, review });
+    res.render('reviews/editReview', { campground, review, redirectTo: req.query.redirectTo });
 };
 
 module.exports.updateReview = async (req, res) => {
@@ -187,8 +188,9 @@ module.exports.updateReview = async (req, res) => {
         });
     }
     await review.save();
+    const redirectURL = req.body.redirectTo || `/campgrounds/${campId}/reviews`
     req.flash('success', 'Successfully updated review!');
-    res.redirect(`/campgrounds/${campId}/reviews`);
+    res.redirect(redirectURL);
 };
 
 

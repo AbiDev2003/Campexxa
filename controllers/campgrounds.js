@@ -1,15 +1,21 @@
 const Campground = require('../models/campground')
+const User = require('../models/user')
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding')
 const mapBoxToken = process.env.MAPBOX_TOKEN
 const geocoder = mbxGeocoding({accessToken: mapBoxToken})
 const { cloudinary } = require('../cloudinary');
 const Fuse = require('fuse.js'); 
+const { attachRatings } = require('../utils/campgroundHelpers');
+const { computeRating } = require('../utils/campgroundHelpers');
+const { getPagination, getHasMore } = require('../utils/paginate');
+const { sendPaginatedResponse } = require('../utils/sendPaginatedResponse');
 
 module.exports.index = async (req, res) => {
+    
     const search = req.query.search?.trim() || "";
     const selectedLocations = req.query.location
-    ? req.query.location.split(",")
-    : [];
+        ? req.query.location.split(",")
+        : [];
 
     let mongoQuery = {};
     if (selectedLocations.length) {
@@ -93,14 +99,7 @@ module.exports.index = async (req, res) => {
             .lean({virtuals: true});
     }
 
-    let campgroundsWithRatings = camps.map(camp => {
-        const reviews = camp.reviews || [];
-        const totalReviews = reviews.length;
-        const avgRating = totalReviews
-            ? (reviews.reduce((s, r) => s + r.rating, 0) / totalReviews).toFixed(1)
-            : 0;
-        return { ...camp, avgRating, totalReviews };
-    });
+    let campgroundsWithRatings = attachRatings(camps);
 
     // ⭐ RATING FILTER (single-select)
     const ratingFilter = req.query.rating;
@@ -143,7 +142,7 @@ module.exports.index = async (req, res) => {
     console.log("Sample dates:", campgroundsWithRatings.slice(0,3).map(c => c.createdAt));
     
     // sort the campgrounds
-    // 🔽 SORT LOGIC (ADD HERE)
+    // sort logic
     const { sort } = req.query;
         if (sort) {
             switch (sort) {
@@ -185,13 +184,38 @@ module.exports.index = async (req, res) => {
                     break;
             }
         }
+
+    // load more infinity scroll 
+    const { page, limit, skip } = getPagination(req);
+
+    const total = campgroundsWithRatings.length;
+
+    const paginatedCampgrounds = campgroundsWithRatings.slice(
+        skip,
+        skip + limit
+    );
+
+    const hasMore = getHasMore(total, paginatedCampgrounds.length, skip);
+
+    const response = await sendPaginatedResponse({
+        req,
+        res,
+        view: 'partials/campCardList',
+        dataKey: 'campgrounds',
+        data: paginatedCampgrounds,
+        hasMore
+    });
+
+    if (response) return response;
     
     // render once
     return res.render("campground/index", {
-        campgrounds: campgroundsWithRatings,
+        campgrounds: paginatedCampgrounds,
         search, 
         selectedLocations, 
-        sort
+        sort,
+        page, 
+        hasMore
     });
 };
 
@@ -207,7 +231,6 @@ module.exports.createCampground = async (req, res) => {
         limit: 1
     }).send();
     const feature = geoData.body.features[0];
-    // console.log("MAPBOX FEATURE:", JSON.stringify(feature, null, 2));
     let countryCode = null;
     if (feature.context) {
         const countryContext = feature.context.find(c => c.id.startsWith("country"));
@@ -264,13 +287,11 @@ module.exports.showCampground = async (req, res) => {
         return res.redirect('/campgrounds');
     }
 
-    // Reviews summary
-    const reviews = campground.reviews || [];
-    const totalReviews = reviews.length;
+    let isSaved = false; 
 
-    const avgRating = totalReviews
-        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(1)
-        : 0;
+    // Reviews summary
+    
+    const ratedCamp = computeRating(campground);
 
     // NEW → Formatted Created Date (29 March 2025)
     const createdAt = campground.createdAt;
@@ -282,7 +303,17 @@ module.exports.showCampground = async (req, res) => {
         })
         : "";
 
-    res.render("campground/show", { campground, avgRating, totalReviews, formattedDate });
+    if(req.user){
+        isSaved = req.user.savedCampgrounds.some(id => id.equals(campground._id))
+    }
+
+    res.render("campground/show", { 
+        campground,
+        avgRating: ratedCamp.avgRating,
+        totalReviews: ratedCamp.totalReviews,
+        formattedDate,
+        isSaved
+    });
 };
 
 
@@ -366,5 +397,26 @@ module.exports.deleteCampground = async(req, res) => {
     const campground = await Campground.findByIdAndDelete(id, { ...req.body.campground }, { new: true });
     req.flash('success', 'Campground deleted successfully!');
     res.redirect(`/campgrounds`);
+}
+
+module.exports.saveCampground = async(req, res) => {
+    const user = await User.findById(req.user._id); 
+    const campId = req.params.id; 
+    if(!user.savedCampgrounds.includes(campId)){
+        user.savedCampgrounds.push(campId); 
+        await user.save(); 
+    }
+    req.flash('success', 'Campground saved successfully!');
+    res.redirect(`/campgrounds/${campId}`);
+}
+module.exports.unsaveCampground = async(req, res) => {
+    const user = await User.findById(req.user._id)
+    const campId = req.params.id; 
+    user.savedCampgrounds = user.savedCampgrounds.filter((id) => {
+        id.toString() !== campId; 
+    })
+    await user.save(); 
+    req.flash('success', 'Campground successfully removed from saved!');
+    res.redirect(`/campgrounds/${campId}`);
 }
 
