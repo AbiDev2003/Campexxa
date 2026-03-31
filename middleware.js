@@ -53,7 +53,9 @@ module.exports.isReviewAuther = async (req, res, next) => {
 }
 
 module.exports.validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body); 
+    const { review } = req.body;
+    const { error } = reviewSchema.validate({ review });
+    // const {error} = reviewSchema.validate(req.body, { allowUnknown: true }); 
     if(error){
         const msg = error.details.map(el => el.message).join(', ')
         throw new ExpressError(msg, 400); 
