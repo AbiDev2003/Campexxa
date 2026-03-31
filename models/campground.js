@@ -49,7 +49,7 @@ const CampgroundSchema = new Schema(
         currencySymbol: String
     }, opts
 )
-CampgroundSchema.index({ geometry: "2dsphere" });
+CampgroundSchema.index({ geometry: "2dsphere", auther: 1, createdAt: -1 });
 
 CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
     return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>`;

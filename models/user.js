@@ -1,7 +1,14 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
-const opts = { toJSON: { virtuals: true } };
+const leanVirtuals = require('mongoose-lean-virtuals');
 const { Schema } = mongoose; 
+
+
+const opts = {
+    toJSON: { virtuals: true }, 
+    toObject: {virtuals: true}, 
+    timestamps: true, 
+}
 
 const UserSchema = new Schema({
     email: {
@@ -12,6 +19,12 @@ const UserSchema = new Schema({
     fullName: {
         type: String,
         required: true
+    },
+    profileImage: {
+        url: {
+            type: String,
+        },
+        filename: String
     },
     resetPasswordToken: String,
     resetPasswordExpires: Date, 
@@ -29,7 +42,7 @@ const UserSchema = new Schema({
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Campground"
-    }
+    }, 
 ]
 }, opts);
 
@@ -44,4 +57,5 @@ UserSchema.virtual('profileInitial').get(function() {
 })
 
 UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(leanVirtuals); 
 module.exports = mongoose.model('User', UserSchema);
