@@ -1,0 +1,196 @@
+<div class="container-fluid mb-4">
+  <div class="card shadow-sm border-0 p-4">
+
+    <!-- Title -->
+    <h4 class="fw-bold mb-1">Edit Profile</h4>
+    <p class="text-muted mb-4">Update your profile information</p>
+
+    <form action="/dashboard/profile/update" method="POST" enctype="multipart/form-data">
+
+      <!-- 🔵 Profile Image -->
+      <div class="text-center mb-4">
+        <img 
+          id="profilePreview"
+          src="<%= (user && user.profileImage && user.profileImage.url) || '/default-avatar.png' %>"
+          class="rounded-circle border"
+          style="width:120px; height:120px; object-fit:cover;"
+        >
+
+        <div class="mt-3">
+            <label for="profileInput" class="btn btn-light border btn-sm px-3">Change Photo</label>
+            <input type="file" name="profileImage" id="profileInput" hidden>
+        </div>
+      </div>
+
+      <div class="modal fade" id="cropModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content p-3">
+            
+                <h5 class="mb-3">Crop Image</h5>
+
+                <div>
+                    <img id="cropImage" style="max-width:100%;">
+                </div>
+
+                <div class="mt-3 d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="cropDone" class="btn btn-dark">Done</button>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
+      <!-- 🔤 Username -->
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input 
+          type="text" 
+          id="username"
+          name="username" 
+          class="form-control" 
+          value="<%= user.username %>" 
+          required
+        >
+        <small id="usernameFeedback"></small>
+      </div>
+
+      <!-- 👤 Full Name -->
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input 
+          type="text" 
+          name="fullName" 
+          class="form-control" 
+          value="<%= user.fullName %>"
+          required
+        >
+      </div>
+
+      <!-- 📧 Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input 
+          type="email" 
+          class="form-control bg-light text-muted" 
+          value="<%= user.email %>" 
+          readonly
+        >
+      </div>
+
+      <!-- 🚀 Button -->
+      <div class="mt-3">
+        <button class="btn btn-dark px-4" id="updateBtn" disabled >Update Profile</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<!-- 🔥 Image Preview -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    let cropper;
+    const input = document.getElementById('profileInput');
+    const cropImage = document.getElementById('cropImage');
+    const preview = document.getElementById('profilePreview');
+    
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      cropImage.onload = null; // reset old handler
+      cropImage.src = url;
+
+      const modal = new bootstrap.Modal(document.getElementById('cropModal'));
+      modal.show();
+
+      cropImage.onload = () => {
+          if (cropper) cropper.destroy();
+
+          cropper = new Cropper(cropImage, {
+              aspectRatio: 1,
+              viewMode: 1
+          });
+      };
+    });
+
+    document.getElementById('cropDone').addEventListener('click', () => {
+      const canvas = cropper.getCroppedCanvas({
+        width: 300,
+        height: 300
+      });
+
+    // preview
+    preview.src = canvas.toDataURL();
+    
+    // convert to file again
+    canvas.toBlob(blob => {
+      const file = new File([blob], "profile.jpg", { type: "image/jpeg" });
+
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+
+      input.files = dataTransfer.files;
+    });
+
+    bootstrap.Modal.getInstance(document.getElementById('cropModal')).hide();
+  });
+})
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    const usernameInput = document.getElementById('username');
+    const fullNameInput = document.querySelector('input[name="fullName"]');
+    const fileInput = document.getElementById('profileInput');
+
+    const btn = document.getElementById('updateBtn');
+
+    const originalUsername = "<%= user.username %>";
+    const originalFullName = "<%= user.fullName %>";
+
+    function checkChanges() {
+      const username = usernameInput.value.trim();
+      const fullName = fullNameInput.value.trim();
+      const fileChanged = fileInput.files.length > 0;
+
+      if (
+        username !== originalUsername ||
+        fullName !== originalFullName ||
+        fileChanged
+      ) {
+        btn.disabled = false;
+      } else {
+        btn.disabled = true;
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      const username = usernameInput.value.trim();
+      const fullName = fullNameInput.value.trim();
+
+      // ❌ empty username
+      if (!username) {
+        e.preventDefault();
+        return;
+      }
+
+      // ❌ no changes
+      if (username === originalUsername && fullName === originalFullName) {
+        e.preventDefault(); // no redirect
+        return;
+      }
+    });
+
+
+    usernameInput.addEventListener('input', checkChanges);
+    fullNameInput.addEventListener('input', checkChanges);
+    fileInput.addEventListener('change', checkChanges);
+  });
+</script>
+<!-- ⚡ Username Check -->
+<script src="/javascripts/usernameCheck.js"></script>

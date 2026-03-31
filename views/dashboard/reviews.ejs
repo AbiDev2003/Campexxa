@@ -1,0 +1,68 @@
+<h5 class="mb-2">My Reviews</h5>
+<p class="text-muted"><%= totalReviews %> total <%=totalReviews.length > 1 ? 'reviews' : 'review' %></p>
+
+<% if (tab === 'reviews') { %>
+  <%- include('../partials/reviewList', { reviews }) %>
+<% } %>
+
+<%- include('../partials/loadInfinityScroll', { 
+  hasMore: hasMoreReviews, 
+  page, 
+  tab 
+}) %>
+
+
+<script>
+  let page = <%= page %>;
+  let hasMore = <%= hasMoreReviews %>;
+  let loading = false;
+
+  const btn = document.getElementById('loadMoreBtn');
+  const container = document.getElementById('reviewsContainer');
+
+  // ✅ guard both — if either is missing, stop
+  if (!btn || !container) {
+    console.warn('loadMore: btn or container not found', { btn, container });
+  } else {
+    btn.addEventListener('click', async () => {
+
+      if (loading || !hasMore) {
+        console.warn('[REVIEWS BLOCKED]', { loading, hasMore });
+        return;
+      }
+
+      loading = true;
+      btn.textContent = "Loading...";
+      page++;
+
+      const url = new URL(window.location.href);
+      url.searchParams.set('page', page);
+      url.searchParams.set('tab', 'reviews'); // ✅ critical
+
+      try {
+        const res = await fetch(url, {
+          headers: { 
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+
+        const data = await res.json();
+        container.insertAdjacentHTML('beforeend', data.html);
+
+        hasMore = data.hasMore;
+        loading = false;
+
+        if (!hasMore) {
+          btn.remove();
+        } else {
+          btn.textContent = "Load More";
+        }
+      } catch(err){
+        console.error('[REVIEWS ERROR]', err);
+        loading = false;
+        btn.textContent = "Load More";
+      }
+  });
+}
+</script>

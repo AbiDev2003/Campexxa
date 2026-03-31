@@ -1,0 +1,58 @@
+<h5 class="mb-2">My Posted Campgrounds</h5>
+<p class="text-muted"><%= totalCampgrounds %> total <%=totalReviews.length > 1 ? 'campgrounds' : 'campground' %> </p>
+
+<%- include('../partials/selectableGrid', {
+  items: campgrounds,
+  actionType: 'delete'
+}) %>
+
+<%- include('../partials/loadInfinityScroll', { 
+  hasMore: hasMoreCampgrounds, 
+  page, 
+  tab 
+}) %>
+
+
+
+<script>
+let page = <%= page %>;
+let hasMore = <%= hasMoreCampgrounds %>;
+let loading = false;
+
+const btn = document.getElementById('loadMoreBtn');
+const container = document.getElementById('campGrid');
+
+if (btn) {
+  btn.addEventListener('click', async () => {
+    if (loading || !hasMore) return;
+
+    loading = true;
+    btn.textContent = "Loading...";
+
+    page++;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+
+    const res = await fetch(url, {
+      headers: { 
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    });
+
+    const data = await res.json();
+
+    container.insertAdjacentHTML('beforeend', data.html);
+
+    hasMore = data.hasMore;
+    loading = false;
+
+    if (!hasMore) {
+      btn.remove();
+    } else {
+      btn.textContent = "Load More";
+    }
+  });
+}
+</script>

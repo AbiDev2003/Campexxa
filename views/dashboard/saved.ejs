@@ -1,0 +1,80 @@
+<h5 class="mb-2">My Saved Campgrounds</h5>
+<p class="text-muted"><%= totalSaved %> total <%=totalSaved.length > 1 ? 'campgrounds' : 'campground' %> </p>
+
+<%- include('../partials/selectableGrid', {
+  items: savedCampgrounds,
+  actionType: 'unsave'
+}) %>
+
+<%- include('../partials/loadInfinityScroll', { 
+  hasMore: hasMoreSaved, 
+  page, 
+  tab 
+}) %>
+
+
+<script>
+let page = <%= page %>;
+let hasMore = <%= hasMoreSaved %>;
+let loading = false;
+
+console.log('[SAVED INIT]', { page, hasMore });
+
+const btn = document.getElementById('loadMoreBtn');
+const container = document.getElementById('campGrid');
+
+console.log('[SAVED ELEMENTS]', { btn, container });
+
+if (btn) {
+  btn.addEventListener('click', async () => {
+    console.log('[SAVED CLICK]', { page, hasMore, loading });
+
+    if (loading || !hasMore) {
+      console.warn('[SAVED BLOCKED]', { loading, hasMore });
+      return;
+    }
+
+    loading = true;
+    btn.textContent = "Loading...";
+    page++;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('page', page);
+    url.searchParams.set('tab', 'saved'); // ✅ critical
+
+    console.log('[SAVED FETCH URL]', url.toString());
+
+    try {
+      const res = await fetch(url, {
+        headers: { 
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
+      console.log('[SAVED RESPONSE STATUS]', res.status);
+
+      const data = await res.json();
+      console.log('[SAVED RESPONSE DATA]', {
+          htmlLength: data.html?.length,
+          hasMore: data.hasMore
+        });
+      container.insertAdjacentHTML('beforeend', data.html);
+
+      hasMore = data.hasMore;
+      loading = false;
+
+      if (!hasMore) {
+        console.log('[SAVED NO MORE DATA]');
+        btn.remove();
+      } else {
+        btn.textContent = "Load More";
+      }
+    } catch(err) {
+      console.error('[SAVED ERROR]', err);
+      loading = false;
+      btn.textContent = "Load More";
+    }
+  });
+}
+</script>
