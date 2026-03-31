@@ -20,15 +20,13 @@ app.set('query parser', 'extended');
 const userRoutes = require('./routes/users')
 const campgroundsRoutes = require('./routes/campgrounds')
 const reviewsRoutes = require('./routes/reviews')
+const dashboardRoutes = require('./routes/dashboard')
 
 const { MongoStore } = require('connect-mongo'); 
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campexxa';
 
-mongoose.connect(dbUrl, {
-  tls: true,
-  tlsAllowInvalidCertificates: false,
-}); 
+mongoose.connect(dbUrl); 
 
 const db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'connection error: '))
@@ -73,7 +71,7 @@ const sessionConfig = {
     saveUninitialized: false, 
     cookie: {
         httpOnly: true, 
-        secure: true,  // only send over HTTPS (will uncomment it while production)
+        secure: process.env.NODE_ENV === "production",  // only send over HTTPS (will uncomment it while production)
         sameSite: 'lax',
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,  //in ms, authentication expires after 7 days, have to authenticate again !
         maxAge: 1000 * 60 * 60 * 24 * 7
@@ -163,6 +161,7 @@ app.use('/', userRoutes)
 app.use('/api', apiRoutes);
 app.use('/campgrounds', campgroundsRoutes) //campgrounds route
 app.use('/campgrounds/:campId/reviews', reviewsRoutes) //review route
+app.use('/dashboard', dashboardRoutes) //dashboard route
 
 
 app.get('/', (req, res) => {
