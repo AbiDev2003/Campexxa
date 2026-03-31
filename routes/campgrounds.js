@@ -13,6 +13,9 @@ router.route('/')
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
+router.post('/:id/save', isLoggedIn, catchAsync(campgrounds.saveCampground))
+router.post('/:id/unsave', isLoggedIn, catchAsync(campgrounds.unsaveCampground))
+
 router.route('/:id')
     .get(catchAsync(campgrounds.showCampground))
     .put(isLoggedIn, validateCampground, upload.array('image'), isAuther, catchAsync(campgrounds.updateCampground))
