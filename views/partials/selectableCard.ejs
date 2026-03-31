@@ -1,0 +1,19 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/stars.css">
+<div class="position-relative selectable-card">
+
+  <!-- Checkbox -->
+  <input 
+    type="checkbox"
+    name="selectedIds[]"
+    value="<%= camp._id %>"
+    class="form-check-input position-absolute m-2 card-checkbox"
+    style="z-index:10; cursor:pointer;"
+>
+
+  <!-- Card -->
+  <div class="selectable-card-inner">
+    <%- include('./campCard', { camp }) %>
+  </div>
+
+</div>

@@ -1,0 +1,53 @@
+<div class="container my-3">
+    <form id="bulkForm" method="POST" action="/dashboard?tab=<%= actionType === 'delete' ? 'campgrounds' : 'saved' %>">
+        <!-- Top Actions -->
+        <%- include('./bulkCardActions', { actionType }) %>
+        <!-- Grid -->
+        <div id="campGrid" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+            <% items.forEach(item => { %>
+            <div class="col">
+                <%- include('./selectableCard', { camp: item }) %>
+            </div>
+            <% }) %>
+        </div>
+    </form>
+</div>
+<!-- Minimal JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const selectAll = document.getElementById("selectAllCheckbox");
+        const checkboxes = document.querySelectorAll(".card-checkbox");
+        const bulkBtn = document.getElementById("bulkActionBtn");
+        
+        function updateButtonState() {
+    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+    bulkBtn.disabled = !anyChecked;
+  }
+
+  // individual checkbox change
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", updateButtonState);
+});
+
+function syncSelectAll() {
+  const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+  selectAll.checked = allChecked;
+}
+
+checkboxes.forEach(cb => {
+  cb.addEventListener("change", () => {
+    updateButtonState();
+    syncSelectAll();
+  });
+});
+
+if (selectAll) {
+    selectAll.addEventListener("change", function () {
+        const checkboxes = document.querySelectorAll(".card-checkbox");
+        checkboxes.forEach(cb => cb.checked = this.checked);
+        updateButtonState()
+    });
+}
+})
+</script>

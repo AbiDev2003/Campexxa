@@ -1,0 +1,51 @@
+<div class="card card-hover h-100"
+  style="border: 0.5px solid black; border-radius:12px; background:white; transition:0.3s;">
+
+  <!-- IMAGE -->
+  <% if(camp.images.length){ %>
+    <img class="card-img-top"
+      style="height:200px; object-fit:cover;"
+      src="<%= camp.images[0].url %>">
+  <% } else { %>
+    <img class="card-img-top"
+      style="height:200px; object-fit:cover;"
+      src="https://via.placeholder.com/400x250?text=No+Image">
+  <% } %>
+
+  <div class="card-body">
+
+    <!-- TITLE + RATING -->
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h5 class="fw-semibold mb-0"><%= camp.title %></h5>
+
+      <% if (camp.avgRating !== undefined) { %>
+        <div class="d-flex align-items-center gap-2">
+          <p class="starability-result mb-0"
+            data-rating="<%= Math.round(camp.avgRating || 0) %>"></p>
+
+          <span class="text-muted fw-semibold">
+            <%= camp.avgRating %>
+          </span>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- LOCATION -->
+    <p class="text-muted small mb-2 d-flex align-items-center gap-1">
+      📍 <%= camp.location %>
+    </p>
+
+    <!-- DESCRIPTION -->
+    <p class="text-truncate mb-3">
+      <%= camp.description %>
+    </p>
+
+    <!-- VIEW BUTTON ONLY -->
+    <a href="/campgrounds/<%= camp._id %>"
+       class="btn camp-view-btn w-100 fw-bold py-2">
+      View <%= camp.title %>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>
+    </a>
+
+  </div>
+</div>

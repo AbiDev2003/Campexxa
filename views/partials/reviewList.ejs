@@ -1,0 +1,27 @@
+<div class="container my-4">
+  <% if(reviews.length === 0){  %>
+    <p class="text-muted text-center mt-4">You have not posted any reviews yet 😔!</p>
+  <% }else{ %>
+
+  <div class="d-flex justify-content-between mb-3">
+    <form method="POST" action="/dashboard/reviews/delete-all">
+      <button 
+        type="button"
+        class="btn btn-outline-danger btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#confirmModal"
+        data-action="/dashboard/reviews/delete-all"
+      >
+        Delete All
+      </button>
+    </form>
+  </div>
+
+  <div id="reviewsContainer">
+    <% reviews.forEach(r => { %>
+      <%- include('./reviewCampCard', { review: r, currentUrl: '/dashboard?tab=reviews' }) %>
+    <% }) %>
+  </div>
+  <% } %>
+
+</div>
