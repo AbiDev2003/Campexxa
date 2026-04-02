@@ -93,8 +93,19 @@ module.exports = router;
 
 // routes for github oauth login baby
 router.get(
-  "/auth/github",
-  passport.authenticate("github", { scope: ["user:email"] })
+  "/auth/github", (req, res, next) => {
+    // Save returnTo in session BEFORE the OAuth redirect wipes it
+    if (req.session.returnTo) {
+      req.session.oauthReturnTo = req.session.returnTo;
+    }
+    const returnTo = req.session.oauthReturnTo || '/campgrounds';
+    const state = encodeURIComponent(returnTo);
+
+    passport.authenticate("github", { 
+      scope: ["user:email"], 
+      state 
+    })(req, res, next); 
+  }
 );
 
 router.get(
@@ -104,7 +115,8 @@ router.get(
     failureFlash: true
   }),
   (req, res) => {
-    const redirectUrl = req.session.returnTo || '/campgrounds';
+    const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
+    delete req.session.oauthReturnTo;
     delete req.session.returnTo;
     res.redirect(redirectUrl);
   }
