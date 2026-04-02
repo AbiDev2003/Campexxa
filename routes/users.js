@@ -61,16 +61,27 @@ router.route('/reset/:token')
   }, catchAsync(users.handleResetPassword));
 
 // routes for google oauth login baby
-router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }))
+// router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }))
+router.get("/auth/google", (req, res, next) => {
+  const returnTo = req.query.returnTo || '/campgrounds';
+  const state = encodeURIComponent(returnTo);
+
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    state
+  })(req, res, next);
+});
 router.get("/auth/google/callback", 
   passport.authenticate("google", {
     failureRedirect: "/login",
     failureFlash: true
   }), 
   (req, res) => {
-    const redirectUrl = req.session.returnTo || '/campgrounds';
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
+    const returnTo = req.query.state
+      ? decodeURIComponent(req.query.state)
+      : '/campgrounds';
+
+    res.redirect(returnTo);
   })
 module.exports = router; 
 
