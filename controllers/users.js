@@ -1,7 +1,6 @@
 const User = require('./../models/user');
 const {userSchema} = require('./../schemas');
 const crypto = require('crypto');
-const nodemailer = require("nodemailer");
 const { Resend } = require('resend') //for resend mail service ! 
 
 module.exports.renderRegister = (req, res) => {
@@ -99,7 +98,6 @@ module.exports.handleForgotPassword = async (req, res) => {
     const protocol = req.protocol;
     const host = req.get('host');
     const resetURL = `${protocol}://${host}/reset/${rawToken}`;
-
     // send mail using resend ************************************************************
 
     const sendMail = async (email) => {
@@ -164,7 +162,7 @@ module.exports.renderResetForm = async (req, res) => {
       return res.redirect('/forgot-password');
     }
 
-    res.render('users/reset', { token });
+    res.render('users/reset', { token});
   } catch (err) {
     console.error('renderResetForm error:', err);
     req.flash('error', 'Something went wrong. Try again.');
@@ -254,7 +252,7 @@ module.exports.skipResetPassword = async (req, res) => {
         req.flash('error', 'Something went wrong. Please log in.');
         return res.redirect('/login');
       }
-      req.flash('success', 'Logged in successfully!');
+      req.flash('success', 'Logged in successfully!'); 
       return res.redirect('/campgrounds');
     });
 
