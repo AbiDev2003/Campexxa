@@ -62,11 +62,17 @@ router.route('/reset/:token')
 
 // routes for google oauth login baby
 router.get("/auth/google", (req, res, next) => {
-  // Save returnTo in session BEFORE the OAuth redirect wipes it
+  // Note : 1:
+  // When user tries a protected route → we store it in `req.session.returnTo`
+  // But OAuth redirect creates a new request cycle and may overwrite session
+  // So we manually preserve it in a separate key BEFORE redirect
   if (req.session.returnTo) {
     req.session.oauthReturnTo = req.session.returnTo;
   }
 
+  // Note: 2 (critical)
+  // Session must be saved BEFORE redirecting to Google
+  // Otherwise oauthReturnTo might not persist
   req.session.save((err) => {
     if (err) return next(err);
     passport.authenticate("google", {
@@ -75,18 +81,26 @@ router.get("/auth/google", (req, res, next) => {
   });
 });
 router.get("/auth/google/callback", 
+  // Note: 3 : Middleware before passport.authenticate:
+  // We extract redirect target from session and store in res.locals
+  // because session may change after authentication
   (req, res, next) => {
     res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
     next();
   },
+
+  // Note: 4: Passport handles Google authentication response here
   passport.authenticate("google", {
     failureRedirect: "/login",
     failureFlash: true
   }), 
+  // Note:5 : final redirect handler
   (req, res) => {
-
+    //Note: 6:  CleanUp: Remove temporary session values to avoid stale redirects later
     delete req.session.oauthReturnTo;
     delete req.session.returnTo;
+
+    // Note: 6: Redirect user back to original page (or fallback)
     res.redirect(res.locals.oauthReturnTo);
   })
 module.exports = router; 
