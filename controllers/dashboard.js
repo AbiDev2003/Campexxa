@@ -51,13 +51,11 @@ module.exports.renderDashboard = async (req, res) => {
         }).select('_id'); // only ids
 
         const validIds = validSaved.map(c => c._id.toString());
-        console.log('[VALID IDS]', validIds.length);
 
         // ✅ 2. find invalid ids
         const invalidIds = user.savedCampgrounds.filter(
             id => !validIds.includes(id.toString())
         );
-        console.log('[INVALID IDS]', invalidIds);
 
         // ✅ 3. auto-clean DB
         if (invalidIds.length > 0) {
@@ -82,15 +80,6 @@ module.exports.renderDashboard = async (req, res) => {
         // ✅ SAVED CAMPGROUNDS RATING
         savedCampgrounds = attachRatings(savedRaw);
         hasMoreSaved = getHasMore(totalSavedClean, savedCampgrounds.length, skip);
-
-        console.log('[BACKEND]', {
-            tab,
-            page,
-            skip,
-            limit,
-            dataLength: savedCampgrounds.length, 
-            total: totalSavedClean, 
-            });
 
         const response = await sendPaginatedResponse({
             req,
@@ -140,15 +129,6 @@ module.exports.renderDashboard = async (req, res) => {
         }
         
         hasMoreReviews = getHasMore(totalReviewsClean, reviews.length, skip);
-        
-        console.log('[BACKEND]', {
-            tab,
-            page,
-            skip,
-            limit,
-            dataLength: reviews.length,
-            total: totalReviewsClean,
-            });
 
         const response = await sendPaginatedResponse({
             req,

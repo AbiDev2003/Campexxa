@@ -138,8 +138,6 @@ module.exports.index = async (req, res) => {
 
         campgroundsWithRatings = fuse.search(search).map(r => r.item);
     }
-
-    console.log("Sample dates:", campgroundsWithRatings.slice(0,3).map(c => c.createdAt));
     
     // sort the campgrounds
     // sort logic
@@ -225,7 +223,6 @@ module.exports.renderNewForm = async (req, res) => {
 }
 
 module.exports.createCampground = async (req, res) => {
-    console.log("RAW BODY >>>", req.body);
     const geoData = await geocoder.forwardGeocode({
         query: req.body.campground.location,
         limit: 1
@@ -238,8 +235,6 @@ module.exports.createCampground = async (req, res) => {
             countryCode = countryContext.short_code.toUpperCase();
         }
     }
-
-    console.log("detecetd country code from location: ", countryCode);
 
 
     // 1️⃣ Read seller-selected currency from dropdown

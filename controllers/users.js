@@ -50,7 +50,6 @@ module.exports.renderLogin = (req, res) => {
 }
 
 module.exports.login = (req, res) => {
-  console.log('=== login controller ===');
     req.flash('success', 'Welcome back !')
     const redirectUrl = res.locals.returnTo || req.session.returnTo || '/campgrounds'; 
     delete req.session.returnTo; 

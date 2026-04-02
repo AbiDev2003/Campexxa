@@ -75,7 +75,6 @@ module.exports.currencyRates = async(req, res) => {
             rates: response.data.rates
         });
     } catch (err) {
-        console.log("Fixer error:", err.message);
         res.json({ success: false });
     }
 }
