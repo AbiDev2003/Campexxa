@@ -67,13 +67,18 @@ router.get("/auth/google", (req, res, next) => {
   if (req.session.returnTo) {
     req.session.oauthReturnTo = req.session.returnTo;
   }
-  const returnTo = req.session.oauthReturnTo || '/campgrounds';
-  const state = encodeURIComponent(returnTo);
+  // const returnTo = req.session.oauthReturnTo || '/campgrounds';
+  // const state = encodeURIComponent(returnTo);
 
-  passport.authenticate("google", {
-    scope: ["profile", "email"],
-    state
-  })(req, res, next);
+  // passport.authenticate("google", {
+  //   scope: ["profile", "email"],
+  // })(req, res, next);
+  req.session.save((err) => {
+    if (err) return next(err);
+    passport.authenticate("google", {
+      scope: ["profile", "email"]
+    })(req, res, next);
+  });
 });
 router.get("/auth/google/callback", 
   passport.authenticate("google", {
@@ -81,12 +86,17 @@ router.get("/auth/google/callback",
     failureFlash: true
   }), 
   (req, res) => {
-    const returnTo = req.query.state
-      ? decodeURIComponent(req.query.state)
-      : '/campgrounds';
+    // const returnTo = req.query.state
+    //   ? decodeURIComponent(req.query.state)
+    //   : '/campgrounds';
 
+    // delete req.session.oauthReturnTo;
+    // res.redirect(returnTo);
+
+    const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
     delete req.session.oauthReturnTo;
-    res.redirect(returnTo);
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   })
 module.exports = router; 
 
@@ -94,15 +104,16 @@ module.exports = router;
 // routes for github oauth login baby
 router.get(
   "/auth/github", (req, res, next) => {
+    // Save returnTo in session BEFORE the OAuth redirect wipes it
+    if (req.session.returnTo) {
+      req.session.oauthReturnTo = req.session.returnTo;
+    }
+
     // ADD THIS to debug
     console.log("session at /auth/github:", req.session);
     console.log("returnTo:", req.session.returnTo);
     console.log("oauthReturnTo:", req.session.oauthReturnTo);
 
-    // Save returnTo in session BEFORE the OAuth redirect wipes it
-    if (req.session.returnTo) {
-      req.session.oauthReturnTo = req.session.returnTo;
-    }
     // const returnTo = req.session.oauthReturnTo || '/campgrounds';
     // const state = encodeURIComponent(returnTo);
 
