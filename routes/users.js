@@ -63,7 +63,11 @@ router.route('/reset/:token')
 // routes for google oauth login baby
 // router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }))
 router.get("/auth/google", (req, res, next) => {
-  const returnTo = req.query.returnTo || '/campgrounds';
+  // Save returnTo in session BEFORE the OAuth redirect wipes it
+  if (req.session.returnTo) {
+    req.session.oauthReturnTo = req.session.returnTo;
+  }
+  const returnTo = req.session.oauthReturnTo || '/campgrounds';
   const state = encodeURIComponent(returnTo);
 
   passport.authenticate("google", {
@@ -81,6 +85,7 @@ router.get("/auth/google/callback",
       ? decodeURIComponent(req.query.state)
       : '/campgrounds';
 
+    delete req.session.oauthReturnTo;
     res.redirect(returnTo);
   })
 module.exports = router; 
