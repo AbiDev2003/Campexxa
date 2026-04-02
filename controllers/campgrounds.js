@@ -254,6 +254,15 @@ module.exports.createCampground = async (req, res) => {
         console.log("Currency symbol fallback → ₹");
     }
 
+    // price should be positive
+    let price = parseFloat(req.body.campground.price)
+    if(!price || price < 0){
+        req.flash("error", "Price must be 0 or positive !")
+        return req.redirect('back')
+    }
+    price = Math.round(price * 100) / 100; 
+    req.body.campground.price = price; 
+
     const campground = new Campground(req.body.campground);
     campground.geometry = feature.geometry;
     campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
