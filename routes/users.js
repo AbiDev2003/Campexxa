@@ -3,6 +3,7 @@ const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const passport = require('passport')
 const users = require('./../controllers/users')
+const { handleOAuthStart, handleOAuthCallback } = require('../utils/oauth');
 
 const rateLimit = require('express-rate-limit');
 const user = require('../models/user');
@@ -61,115 +62,36 @@ router.route('/reset/:token')
   }, catchAsync(users.handleResetPassword));
 
 // routes for google oauth login baby
-router.get("/auth/google", (req, res, next) => {
-  // Note : 1:
-  // When user tries a protected route → we store it in `req.session.returnTo`
-  // But OAuth redirect creates a new request cycle and may overwrite session
-  // So we manually preserve it in a separate key BEFORE redirect
-  if (req.session.returnTo) {
-    req.session.oauthReturnTo = req.session.returnTo;
-  }
+router.get(
+  "/auth/google",
+  handleOAuthStart("google", ["profile", "email"])
+);
 
-  // Note: 2 (critical)
-  // Session must be saved BEFORE redirecting to Google
-  // Otherwise oauthReturnTo might not persist
-  req.session.save((err) => {
-    if (err) return next(err);
-    passport.authenticate("google", {
-      scope: ["profile", "email"]
-    })(req, res, next);
-  });
-});
-router.get("/auth/google/callback", 
-  // Note: 3 : Middleware before passport.authenticate:
-  // We extract redirect target from session and store in res.locals
-  // because session may change after authentication
-  (req, res, next) => {
-    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
-    next();
-  },
-
-  // Note: 4: Passport handles Google authentication response here
-  passport.authenticate("google", {
-    failureRedirect: "/login",
-    failureFlash: true
-  }), 
-  // Note:5 : final redirect handler
-  (req, res) => {
-    //Note: 6:  CleanUp: Remove temporary session values to avoid stale redirects later
-    delete req.session.oauthReturnTo;
-    delete req.session.returnTo;
-
-    // Note: 6: Redirect user back to original page (or fallback)
-    res.redirect(res.locals.oauthReturnTo);
-  })
-module.exports = router; 
-
+router.get(
+  "/auth/google/callback",
+  ...handleOAuthCallback("google")
+);
 
 // routes for github oauth login baby
 router.get(
-  "/auth/github", (req, res, next) => {
-    if (req.session.returnTo) {
-      req.session.oauthReturnTo = req.session.returnTo;
-    }
-    req.session.save((err) => {
-      if (err) return next(err);
-      passport.authenticate("github", { 
-        scope: ["user:email"],  
-      })(req, res, next); 
-
-    })
-  }
+  "/auth/github",
+  handleOAuthStart("github", ["user:email"])
 );
 
 router.get(
   "/auth/github/callback",
-  (req, res, next) => {
-    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
-    next();
-  },
-  passport.authenticate("github", {
-    failureRedirect: "/login",
-    failureFlash: true
-  }),
-  (req, res) => {
-    delete req.session.oauthReturnTo;
-    delete req.session.returnTo; 
-    res.redirect(res.locals.oauthReturnTo);
-  }
-); 
+  ...handleOAuthCallback("github")
+);
 
 // routes for facebook oauth login baby
 router.get(
-  "/auth/facebook", (req, res, next) => {
-    if (req.session.returnTo) {
-      req.session.oauthReturnTo = req.session.returnTo;
-    }
-    req.session.save((err) => {
-      if (err) return next(err);
-      passport.authenticate("facebook", { 
-        scope: ["email"],  
-      })(req, res, next); 
-
-    })
-  }
+  "/auth/facebook",
+  handleOAuthStart("facebook", ["email"])
 );
 
 router.get(
   "/auth/facebook/callback",
-  (req, res, next) => {
-    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
-    next();
-  },
-  passport.authenticate("facebook", {
-    failureRedirect: "/login",
-    failureFlash: true
-  }),
-  (req, res) => {
-    delete req.session.oauthReturnTo;
-    delete req.session.returnTo; 
-    res.redirect(res.locals.oauthReturnTo);
-  }
+  ...handleOAuthCallback("facebook")
 );
 
 // redudant route added for facebook oauth
@@ -183,12 +105,13 @@ router.get("/privacy-policy", (req, res) => {
   `);
 });
 
-
 // delete data, fb oauth
 router.get("/data-deletion", (req, res) => {
   res.send(`
     <h1>Data Deletion Instructions - Campexxa</h1>
     <p>If you wish to delete your account and all associated data from Campexxa, please contact support or request deletion from within your account.</p>
     <p>You can also email the developer to request permanent removal of your account data.</p>
-  `);
+    `);
 });
+
+module.exports = router; 
