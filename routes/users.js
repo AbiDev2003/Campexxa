@@ -61,18 +61,12 @@ router.route('/reset/:token')
   }, catchAsync(users.handleResetPassword));
 
 // routes for google oauth login baby
-// router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }))
 router.get("/auth/google", (req, res, next) => {
   // Save returnTo in session BEFORE the OAuth redirect wipes it
   if (req.session.returnTo) {
     req.session.oauthReturnTo = req.session.returnTo;
   }
-  // const returnTo = req.session.oauthReturnTo || '/campgrounds';
-  // const state = encodeURIComponent(returnTo);
 
-  // passport.authenticate("google", {
-  //   scope: ["profile", "email"],
-  // })(req, res, next);
   req.session.save((err) => {
     if (err) return next(err);
     passport.authenticate("google", {
@@ -90,17 +84,6 @@ router.get("/auth/google/callback",
     failureFlash: true
   }), 
   (req, res) => {
-    // const returnTo = req.query.state
-    //   ? decodeURIComponent(req.query.state)
-    //   : '/campgrounds';
-
-    // delete req.session.oauthReturnTo;
-    // res.redirect(returnTo);
-
-    // const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
-    // delete req.session.oauthReturnTo;
-    // delete req.session.returnTo;
-    // res.redirect(redirectUrl);
 
     delete req.session.oauthReturnTo;
     delete req.session.returnTo;
@@ -122,9 +105,6 @@ router.get(
     console.log("returnTo:", req.session.returnTo);
     console.log("oauthReturnTo:", req.session.oauthReturnTo);
 
-    // const returnTo = req.session.oauthReturnTo || '/campgrounds';
-    // const state = encodeURIComponent(returnTo);
-
     req.session.save((err) => {
       if (err) return next(err);
       passport.authenticate("github", { 
@@ -132,10 +112,6 @@ router.get(
       })(req, res, next); 
 
     })
-    // passport.authenticate("github", { 
-    //   scope: ["user:email"],
-    //   state  
-    // })(req, res, next); 
   }
 );
 
@@ -150,22 +126,11 @@ router.get(
     failureFlash: true
   }),
   (req, res) => {
-    // const returnTo = req.query.state
-    //   ? decodeURIComponent(req.query.state)
-    //   : '/campgrounds';
-
-    // delete req.session.oauthReturnTo;
-    // res.redirect(returnTo);
-
-    // const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
     delete req.session.oauthReturnTo;
-    delete req.session.returnTo;
-    // res.redirect(redirectUrl); 
+    delete req.session.returnTo; 
     res.redirect(res.locals.oauthReturnTo);
-
   }
 ); 
-
 
 // routes for facebook oauth login baby
 router.get(
