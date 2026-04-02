@@ -81,6 +81,10 @@ router.get("/auth/google", (req, res, next) => {
   });
 });
 router.get("/auth/google/callback", 
+  (req, res, next) => {
+    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
+    next();
+  },
   passport.authenticate("google", {
     failureRedirect: "/login",
     failureFlash: true
@@ -93,10 +97,14 @@ router.get("/auth/google/callback",
     // delete req.session.oauthReturnTo;
     // res.redirect(returnTo);
 
-    const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
+    // const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
+    // delete req.session.oauthReturnTo;
+    // delete req.session.returnTo;
+    // res.redirect(redirectUrl);
+
     delete req.session.oauthReturnTo;
     delete req.session.returnTo;
-    res.redirect(redirectUrl);
+    res.redirect(res.locals.oauthReturnTo);
   })
 module.exports = router; 
 
@@ -118,6 +126,7 @@ router.get(
     // const state = encodeURIComponent(returnTo);
 
     req.session.save((err) => {
+      if (err) return next(err);
       passport.authenticate("github", { 
         scope: ["user:email"],  
       })(req, res, next); 
@@ -132,6 +141,10 @@ router.get(
 
 router.get(
   "/auth/github/callback",
+  (req, res, next) => {
+    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
+    next();
+  },
   passport.authenticate("github", {
     failureRedirect: "/login",
     failureFlash: true
@@ -144,10 +157,12 @@ router.get(
     // delete req.session.oauthReturnTo;
     // res.redirect(returnTo);
 
-    const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
+    // const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
     delete req.session.oauthReturnTo;
     delete req.session.returnTo;
-    res.redirect(redirectUrl); 
+    // res.redirect(redirectUrl); 
+    res.redirect(res.locals.oauthReturnTo);
+
   }
 ); 
 
