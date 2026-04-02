@@ -99,9 +99,11 @@ router.get(
       req.session.oauthReturnTo = req.session.returnTo;
     }
     const returnTo = req.session.oauthReturnTo || '/campgrounds';
+    const state = encodeURIComponent(returnTo);
 
     passport.authenticate("github", { 
-      scope: ["user:email"],  
+      scope: ["user:email"],
+      state  
     })(req, res, next); 
   }
 );
@@ -113,10 +115,12 @@ router.get(
     failureFlash: true
   }),
   (req, res) => {
-    const redirectUrl = req.session.oauthReturnTo || '/campgrounds';
+    const returnTo = req.query.state
+      ? decodeURIComponent(req.query.state)
+      : '/campgrounds';
+
     delete req.session.oauthReturnTo;
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
+    res.redirect(returnTo);
   }
 ); 
 
