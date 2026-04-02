@@ -99,11 +99,9 @@ router.get(
       req.session.oauthReturnTo = req.session.returnTo;
     }
     const returnTo = req.session.oauthReturnTo || '/campgrounds';
-    const state = encodeURIComponent(returnTo);
 
     passport.authenticate("github", { 
-      scope: ["user:email"], 
-      state 
+      scope: ["user:email"],  
     })(req, res, next); 
   }
 );
