@@ -1,10 +1,10 @@
-# Campexxa
+# 🏕️ Campexxa
 
 Campexxa is a full-stack web application for discovering, creating, and reviewing outdoor and leisure spots such as campgrounds, hiking spots, and food destinations. It is built with a scalable architecture and focuses on usability, personalization, and performance.
 
 ---
 
-## Overview
+## 🗺️ Overview
 
 Campexxa enables users to explore and share "spots" for travel and leisure. Users can create listings, upload images, leave reviews, and manage their activity through a personalized dashboard.
 
@@ -12,7 +12,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 ### Backend
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
@@ -47,7 +47,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Features
+## ✨ Features
 
 - Full CRUD functionality for spots
 - Dynamic search with fuzzy matching
@@ -66,9 +66,9 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Engineering Highlights
+## ⚙️ Engineering Highlights
 
-### 5.1 Key Engineering Decisions
+### 5.1 🔧 Key Engineering Decisions
 
 - Implemented reusable pagination + infinite scroll system using partial rendering and AJAX
 - Designed modular API response handler (`sendPaginatedResponse`) for consistent frontend updates
@@ -78,7 +78,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 - Implemented debounced search for better UX
 - Structured dashboard with tab-based rendering to reduce route complexity
 
-### 5.2 Security Practices
+### 5.2 🔐 Security Practices
 
 - Input validation using Joi
 - Protection against NoSQL injection (`mongoSanitize`)
@@ -86,7 +86,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 - Rate limiting for sensitive routes (login, forgot password)
 - Session-based authentication with secure cookies
 
-### 5.3 Scalability Considerations
+### 5.3 📈 Scalability Considerations
 
 - Modular MVC architecture
 - Reusable utility functions
@@ -95,7 +95,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Architecture Highlights
+## 🏗️ Architecture Highlights
 
 - Modular MVC structure (controllers, routes, models)
 - Reusable utility functions and EJS:
@@ -108,7 +108,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
 <table>
   <tr>
@@ -175,13 +175,13 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Live Link
+## 🚀 Live Link
 
 [View Live App](https://campexxa.onrender.com)
 
 ---
 
-## Future Improvements
+## 🔮 Future Improvements
 
 - Improved UI using Tailwind CSS
 - Migration to a modern frontend framework (e.g., React)
@@ -192,7 +192,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## Technical Notes / Learnings
+## 💡 Technical Learnings and blogs
 
 This project includes practical solutions to real-world issues such as:
 
@@ -210,9 +210,9 @@ Here are a few blogs which i published on hashnode, during development of this p
 
 ---
 
-## Author
+## 👤 Author
 
 **Abinash Dash**
 
 - GitHub: [AbiDev2003](https://github.com/AbiDev2003)
-- LinkedIn: [Add your LinkedIn URL here](https://www.linkedin.com/in/abinashdev/)
+- LinkedIn: [abinashdev](https://www.linkedin.com/in/abinashdev/)
