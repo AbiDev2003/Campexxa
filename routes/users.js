@@ -68,7 +68,9 @@ router.get("/auth/google/callback",
     failureFlash: true
   }), 
   (req, res) => {
-    res.redirect("/campgrounds")
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   })
 module.exports = router; 
 
@@ -86,7 +88,9 @@ router.get(
     failureFlash: true
   }),
   (req, res) => {
-    res.redirect("/campgrounds");
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   }
 ); 
 
@@ -104,7 +108,9 @@ router.get(
     failureFlash: true
   }),
   (req, res) => {
-    res.redirect("/campgrounds");
+    const redirectUrl = req.session.returnTo || '/campgrounds';
+    delete req.session.returnTo;
+    res.redirect(redirectUrl);
   }
 );
 
