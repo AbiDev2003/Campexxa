@@ -109,16 +109,9 @@ module.exports = router;
 // routes for github oauth login baby
 router.get(
   "/auth/github", (req, res, next) => {
-    // Save returnTo in session BEFORE the OAuth redirect wipes it
     if (req.session.returnTo) {
       req.session.oauthReturnTo = req.session.returnTo;
     }
-
-    // ADD THIS to debug
-    console.log("session at /auth/github:", req.session);
-    console.log("returnTo:", req.session.returnTo);
-    console.log("oauthReturnTo:", req.session.oauthReturnTo);
-
     req.session.save((err) => {
       if (err) return next(err);
       passport.authenticate("github", { 
@@ -148,20 +141,34 @@ router.get(
 
 // routes for facebook oauth login baby
 router.get(
-  "/auth/facebook",
-  passport.authenticate("facebook", { scope: ["email"] })
+  "/auth/facebook", (req, res, next) => {
+    if (req.session.returnTo) {
+      req.session.oauthReturnTo = req.session.returnTo;
+    }
+    req.session.save((err) => {
+      if (err) return next(err);
+      passport.authenticate("facebook", { 
+        scope: ["email"],  
+      })(req, res, next); 
+
+    })
+  }
 );
 
 router.get(
   "/auth/facebook/callback",
+  (req, res, next) => {
+    res.locals.oauthReturnTo = req.session.oauthReturnTo || '/campgrounds';
+    next();
+  },
   passport.authenticate("facebook", {
     failureRedirect: "/login",
     failureFlash: true
   }),
   (req, res) => {
-    const redirectUrl = req.session.returnTo || '/campgrounds';
-    delete req.session.returnTo;
-    res.redirect(redirectUrl);
+    delete req.session.oauthReturnTo;
+    delete req.session.returnTo; 
+    res.redirect(res.locals.oauthReturnTo);
   }
 );
 
