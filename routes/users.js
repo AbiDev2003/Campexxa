@@ -108,19 +108,23 @@ router.get("/privacy-policy", (req, res) => {
 // delete data, fb oauth
 router.get("/data-deletion", (req, res) => {
   res.send(`
-    <h1>Data Deletion Instructions - Campexxa</h1>
+    <!DOCTYPE html>
+<html>
+<head>
+  <title>Data Deletion - Campexxa</title>
+</head>
+<body>
+  <h1>Data Deletion Instructions - Campexxa</h1>
 
-<p>If you wish to delete your Campexxa account and associated data, follow the steps below:</p>
+  <p>If you want to delete your data:</p>
+  <ul>
+    <li>Login and request deletion</li>
+    <li>Or email: 2003abinashdash@gmail.com</li>
+  </ul>
 
-<ol>
-  <li>Log in to your account and go to account settings.</li>
-  <li>Request account deletion from the dashboard.</li>
-  <li>Or email us at <b>2003abinashdash@gmail.com</b> with your registered email.</li>
-</ol>
-
-<p>We will process your request and permanently delete your data within 7 days.</p>
-
-<p>If you have logged in using Facebook, you can also request data deletion through Facebook settings.</p>
+  <p>Data will be deleted within 7 days.</p>
+</body>
+</html>
     `);
 });
 
