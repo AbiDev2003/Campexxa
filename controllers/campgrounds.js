@@ -83,7 +83,8 @@ module.exports.index = async (req, res) => {
                     near: { type: "Point", coordinates: [lng, lat] },
                     distanceField: "distance",
                     maxDistance: radiusMeters,
-                    spherical: true
+                    spherical: true, 
+                    key: "geometry"
                 }
             }
         ]);
