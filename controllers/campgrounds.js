@@ -16,6 +16,7 @@ module.exports.index = async (req, res) => {
     const selectedLocations = req.query.location
         ? req.query.location.split(",")
         : [];
+    const sort = req.query.sort || "";
 
     let mongoQuery = {};
     if (selectedLocations.length) {
@@ -124,7 +125,11 @@ module.exports.index = async (req, res) => {
         if (exactMatches.length) {
             return res.render("campground/index", {
                 campgrounds: exactMatches,
-                search
+                search, 
+                selectedLocations,
+                sort,
+                page: 1,
+                hasMore: false 
             });
         }
 
@@ -141,7 +146,7 @@ module.exports.index = async (req, res) => {
     
     // sort the campgrounds
     // sort logic
-    const { sort } = req.query;
+    // const { sort } = req.query;
         if (sort) {
             switch (sort) {
                 case "newest":
