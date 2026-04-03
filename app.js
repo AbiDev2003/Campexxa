@@ -44,6 +44,18 @@ app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// added for data-deletion url meta
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`
+User-agent: *
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+  `);
+});
+
 app.use((req, res, next) => {
   if (req.skipSanitize) return next();
   sanitizeV5({ replaceWith: '_' })(req, res, next);
@@ -80,7 +92,20 @@ const sessionConfig = {
 
 app.use(session(sessionConfig))
 app.use(flash()); 
-app.use(helmet());
+// app.use(helmet());
+app.use(session(sessionConfig))
+app.use(flash());
+
+// ADD THIS HERE for meta dete-deeltion url debug
+app.use((req, res, next) => {
+  const ua = req.headers['user-agent'] || '';
+
+  if (ua.includes('facebookexternalhit')) {
+    return next();
+  }
+
+  next();
+});
 
 const scriptSrcUrls = [
   "https://cdn.jsdelivr.net/",
@@ -156,6 +181,22 @@ app.use((req, res, next) => {
     res.locals.error = req.flash('error');
     next(); 
 })
+
+app.get('/data-deletion', (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head><title>Data Deletion</title></head>
+    <body>
+      <h1>Data Deletion Instructions - Campexxa</h1>
+      <p>Email: 2003abinashdash@gmail.com</p>
+      <p>Data will be deleted within 7 days.</p>
+    </body>
+    </html>
+  `);
+});
+
 
 app.use('/', userRoutes)
 app.use('/api', apiRoutes);

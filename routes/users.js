@@ -106,26 +106,27 @@ router.get("/privacy-policy", (req, res) => {
 });
 
 // delete data, fb oauth
-router.get("/data-deletion", (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-<html>
-<head>
-  <title>Data Deletion - Campexxa</title>
-</head>
-<body>
-  <h1>Data Deletion Instructions - Campexxa</h1>
+// router.get("/data-deletion", (req, res) => {
+//   res.setHeader("Content-Type", "text/html");
+//   res.send(`
+//     <!DOCTYPE html>
+// <html>
+// <head>
+//   <title>Data Deletion - Campexxa</title>
+// </head>
+// <body>
+//   <h1>Data Deletion Instructions - Campexxa</h1>
 
-  <p>If you want to delete your data:</p>
-  <ul>
-    <li>Login and request deletion</li>
-    <li>Or email: 2003abinashdash@gmail.com</li>
-  </ul>
+//   <p>If you want to delete your data:</p>
+//   <ul>
+//     <li>Login and request deletion</li>
+//     <li>Or email: 2003abinashdash@gmail.com</li>
+//   </ul>
 
-  <p>Data will be deleted within 7 days.</p>
-</body>
-</html>
-    `);
-});
+//   <p>Data will be deleted within 7 days.</p>
+// </body>
+// </html>
+//     `);
+// });
 
 module.exports = router; 
