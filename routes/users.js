@@ -12,11 +12,16 @@ const forgotLimiter = rateLimit({
   max: 5, // limit each IP to 5 requests per windowMs
   message: 'Too many password reset requests from this IP, please try again later.'
 });
+
+// login limiter, to prevent brute force attack
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
   standardHeaders: true,
-  message: "Too many login attempts. Try again later."
+  handler: (req, res) => {
+    req.flash('error', 'Too many login attempts. Please try again in 15 minutes.');
+    res.redirect('/login');
+  }
 });
 
 
@@ -27,6 +32,7 @@ router.route('/register')
 router.route('/login')
     .get(users.renderLogin)
     .post(
+      loginLimiter,
         // Save returnTo to res.locals BEFORE passport.authenticate
         (req, res, next) => {
             if (req.session.returnTo) {
