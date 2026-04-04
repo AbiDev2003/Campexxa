@@ -125,8 +125,13 @@ module.exports.showAllReviews = async (req, res) => {
             `${dates[dates.length - 1].toLocaleDateString("en-US", opts)}`;
     }
 
+    // for dynamic meta tags
+    res.locals.meta = {
+        title: `${campground.title} Reviews | Campexxa`,
+        description: `Read reviews and ratings for ${campground.title}.`,
+        canonical: `https://campexxa.onrender.com/campgrounds/${campId}/reviews`
+    };
     //  SEND TO FRONTEND
-    
     res.render("reviews/index", {
         campground,
         reviews: paginatedReviews,

@@ -3,13 +3,23 @@
 
   <!-- IMAGE -->
   <% if(camp.images.length){ %>
-    <img class="card-img-top"
+    <img 
+      class="card-img-top"
       style="height:200px; object-fit:cover;"
-      src="<%= camp.images[0].url %>">
+      src="<%= camp.images[0].url %>" 
+      loading="lazy" 
+      width="400"
+      height="200"
+    >
   <% } else { %>
-    <img class="card-img-top"
+    <img 
+      class="card-img-top"
       style="height:200px; object-fit:cover;"
-      src="https://via.placeholder.com/400x250?text=No+Image">
+      src="https://via.placeholder.com/400x250?text=No+Image" 
+      loading="lazy" 
+      width="400"
+      height="200"
+    >
   <% } %>
 
   <div class="card-body">

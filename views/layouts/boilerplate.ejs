@@ -3,7 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Campexxa</title>
+    <meta name="keywords" content="campgrounds, hiking, travel, food spots, reviews, outdoor destinations">
+    <meta name="author" content="Campexxa">
+    <meta name="robots" content="index, follow">
+    <meta property="og:image" content="https://campexxa.onrender.com/images/preview.jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Campexxa">
+    <meta name="twitter:description" content="Discover amazing campgrounds, feast spots, hike spots and many more.">
+    <meta name="twitter:image" content="https://campexxa.onrender.com/images/preview.jpg">
+    <link rel="icon" href="/favicon.ico">
+    <!-- dynamic tags -->
+    <title><%=meta.title %></title>
+    <meta name="description" content="<%=meta.description %>">
+    <link rel="canonical" href="<%= meta.title %>">
+    <meta property="og:title" content="<%= meta.title %>">
+    <meta property="og:description" content="<%= meta.description %>">
+    <meta property="og:url" content="<%= meta.canonical %>">
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -11,26 +27,17 @@
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-
-    <script
-      crossorigin="anonymous"
-      src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js"
-    ></script>
-    <link
-      crossorigin="anonymous"
-      href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css"
-      rel="stylesheet"
-    />
-
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
-    <link href="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="/stylesheets/app.css" />
     <link rel="stylesheet" href="/stylesheets/auth.css" />
     <link rel="stylesheet" href="/stylesheets/campgrounds.css" />
     <link rel="stylesheet" href="/stylesheets/reviews.css" />
+
+    <!-- navbar and footer in all global -->
     <link rel="stylesheet" href="/stylesheets/navbar.css" />
     <link rel="stylesheet" href="/stylesheets/footer.css" />
   </head>
@@ -53,15 +60,8 @@
     ></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.5.13/dist/cropper.min.js"></script>
 
-    <script src="/javascripts/validateForms.js"></script>
-    <script src="/javascripts/eyeToggle.js"></script>
-    <script src="/javascripts/pwValidate.js"></script>
-    <script src="/javascripts/dragdrop.js"></script>
-    <script src="/javascripts/charCount.js"></script>
-    <script src="/javascripts/checkBoxSelect.js"></script>
-    <script src="/javascripts/geoLocation.js"></script>
+    <script defer src="/javascripts/validateForms.js"></script>
 
     <!-- Global Image Modal -->
     <div id="globalModal" class="imgmod-backdrop d-none">
@@ -118,7 +118,5 @@
       </button>
       <div id="imgmodCounter" class="imgmod-counter">1 / 1</div>
     </div>
-
-    <script src="/javascripts/imageModal.js"></script>
   </body>
 </html>

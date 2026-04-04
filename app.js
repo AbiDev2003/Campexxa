@@ -13,6 +13,7 @@ const methodOverride = require('method-override')
 const passport = require('passport')
 const helmet = require('helmet');
 const sanitizeV5 = require('./utils/mongoSanitizeV5'); 
+const compression = require('compression'); 
 
 const app = express(); 
 app.set('query parser', 'extended');
@@ -43,6 +44,8 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
+
+app.use(compression()); //for better LCP and website loading
 
 app.use((req, res, next) => {
   if (req.skipSanitize) return next();
@@ -149,11 +152,16 @@ configurePassport(passport);
 // });
 
 // flash middleware
-app.use((req, res, next) => {
-    console.log(req.user); 
+app.use((req, res, next) => { 
     res.locals.currentUser = req.user; 
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
+    // meta dynamic tags
+    res.locals.meta = {
+        title: "Campexxa | Home page",
+        description: "Discover campgrounds, hiking trails and food spots with Campexxa",
+        canonical: "https://campexxa.onrender.com"
+    };
     next(); 
 })
 

@@ -49,7 +49,7 @@
           style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
           data-droparea="reviewImages"
         >
-          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" loading="lazy"/>
           <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
           <p class="text-muted small drop-subtext">or click to select files</p>
         </div>
@@ -88,3 +88,6 @@
     </div>
   </div>
 </div>
+
+<script defer src="/javascripts/dragdrop.js"></script>
+<script defer src="/javascripts/charCount.js"></script>

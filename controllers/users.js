@@ -4,7 +4,13 @@ const crypto = require('crypto');
 const { Resend } = require('resend') //for resend mail service ! 
 
 module.exports.renderRegister = (req, res) => {
-    res.render('users/register'); 
+  // for dynamic meta tags
+  res.locals.meta = {
+      title: "Register | Campexxa",
+      description: "Create an account on Campexxa.",
+      canonical: "https://campexxa.onrender.com/register"
+  };
+  res.render('users/register'); 
 }
 
 module.exports.register = async (req, res, next) => {
@@ -46,7 +52,13 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.renderLogin = (req, res) => {
-    res.render('users/login'); 
+  // for dynamic meta tags
+  res.locals.meta = {
+    title: "Login | Campexxa",
+    description: "Login to Campexxa and explore amazing places.",
+    canonical: "https://campexxa.onrender.com/login"
+  };
+  res.render('users/login'); 
 }
 
 module.exports.login = (req, res) => {

@@ -56,7 +56,7 @@
               <% review.images.forEach((img, i) => { %>
                 <div class="col-6 col-md-4">
                   <div class="text-center">
-                    <img src="<%= img.url %>" class="img-fluid rounded img-thumbnail" alt="review image" >
+                    <img src="<%= img.url %>" class="img-fluid rounded img-thumbnail" alt="review image" loading="lazy">
                     <div class="form-check-inline mt-1">
                       <input class="form-check-input delete-checkbox" type="checkbox" id="revImg-<%= i %>" name="deleteReviewImages[]" value="<%= img.filename %>" >
                     </div>
@@ -74,7 +74,7 @@
         data-droparea="reviewImages"
         data-existing="<%= review.images.length %>"
       >
-        <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+        <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" loading="lazy"/>
           <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
           <p class="text-muted small drop-subtext">or click to select files</p>
       </div>
@@ -108,6 +108,10 @@
     </div>
   </div>
 </div>
+
+<script defer src="/javascripts/checkBoxSelect.js"></script>
+<script defer src="/javascripts/dragdrop.js"></script>
+<script defer src="/javascripts/charCount.js"></script>
 
 
 

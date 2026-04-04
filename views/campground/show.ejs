@@ -6,7 +6,7 @@
         <div class="carousel-inner">
             <% campground.images.forEach((img, i) => { %>
                 <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                    <img crossorigin="anonymous" class="d-block w-100" style="height: 350px; object-fit: cover; border-radius: 8px;" src="<%= img.url %>" alt="spot picture" data-gallery="camp-<%= campground._id %>" data-full="<%= img.url %>" >
+                    <img crossorigin="anonymous" class="d-block w-100" style="height: 350px; object-fit: cover; border-radius: 8px;" src="<%= img.url %>" alt="spot picture" data-gallery="camp-<%= campground._id %>" data-full="<%= img.url %>" loading="lazy">
                 </div>
             <% }) %>
         </div>
@@ -123,7 +123,9 @@
   const campground =  <%- JSON.stringify(campground) %>;
 </script>
 
+<script defer src="/javascripts/showPageMap.js"></script>
+<script defer src="/javascripts/imageModal.js"></script>
 
-<script src="/javascripts/showPageMap.js"></script>
-
+<script crossorigin="anonymous" src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js" ></script>
+<link crossorigin="anonymous" href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet" />
 

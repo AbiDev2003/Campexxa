@@ -3,9 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="campgrounds, hiking, travel, food spots, reviews, outdoor destinations">
+    <meta name="author" content="Campexxa">
+    <meta name="robots" content="index, follow">
+    <meta property="og:image" content="https://campexxa.onrender.com/images/preview.jpg">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Campexxa">
+    <meta name="twitter:description" content="Discover amazing campgrounds, feast spots, hike spots and many more.">
+    <meta name="twitter:image" content="https://campexxa.onrender.com/images/preview.jpg">
+    <link rel="icon" href="/favicon.ico">
+    <!-- dynamic tags -->
+    <title><%=meta.title %></title>
+    <meta name="description" content="<%=meta.description %>">
+    <link rel="canonical" href="<%= meta.title %>">
+    <meta property="og:title" content="<%= meta.title %>">
+    <meta property="og:description" content="<%= meta.description %>">
+    <meta property="og:url" content="<%= meta.canonical %>">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="/stylesheets/home.css">
-    <title>Campexxa</title>
 </head>
 <body class="d-flex text-center text-white bg-dark">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -14,7 +31,7 @@
                 <div class="container-fluid p-0">
                     <!-- <img src="/images/logo06.jpg" class="site-logo" alt="Website Logo" /> -->
                     <div class="logo-wrap">
-                        <img src="/images/logo.png" class="site-logo" alt="logo">
+                        <img src="/images/logo.png" class="site-logo" alt="logo" loading="eager">
                     </div>
 
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +65,7 @@
         <main class="px-3">
             <h2>Welcome to 
                 <div class="logo-wrap" style="display: inline;">
-                        <img src="/images/logo.png" class="site-logo" alt="logo">
+                        <img src="/images/logo.png" class="site-logo" alt="logo" loading="eager">
                 </div>!
             </h2>
             <p class="lead"> <br> Jump right in and explore our many campgrounds, hike spots, feast spots and many more. <br>

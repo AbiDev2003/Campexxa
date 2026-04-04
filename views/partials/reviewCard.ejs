@@ -8,6 +8,7 @@
           src="<%= review.auther.profileImage.url %>" 
           class="rounded-circle"
           style="width:35px; height:35px; object-fit:cover;"
+          loading="lazy"
         >
       <% } else { %>
         <div class="profile-initial">
@@ -32,6 +33,7 @@
             class="review-thumb"
             data-gallery="review-<%= review._id %>"
             data-full="<%= img.url %>"
+            loading="lazy"
           >
         <% }) %>
       </div>
@@ -74,3 +76,5 @@
 
   </div>
 </div>
+
+<script defer src="/javascripts/imageModal.js"></script>

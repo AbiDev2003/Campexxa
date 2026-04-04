@@ -1,5 +1,6 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/stylesheets/stars.css">
+<link crossorigin="anonymous" href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet" />
 <style>
   .card-hover:hover {
     box-shadow: 0 0 40px rgba(0,123,255,0.55);
@@ -124,6 +125,10 @@ if (btn) {
 }
 </script>
 
-<script src="/javascripts/clusterMap.js"></script>
-<script src="/javascripts/sort.js"></script>
+<script src="/javascripts/geoLocation.js"></script>
+<script defer src="/javascripts/clusterMap.js"></script>
+<script defer src="/javascripts/sort.js"></script>
+
+<script crossorigin="anonymous" src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js" ></script>
+
 

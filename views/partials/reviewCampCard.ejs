@@ -3,8 +3,11 @@
   <!-- Campground Context -->
   <div class="d-flex align-items-center gap-3 mb-2">
 
-    <img src="<%= review.campground?.images?.[0]?.url || '' %>"
-         style="width:70px; height:70px; object-fit:cover; border-radius:10px;">
+    <img 
+      src="<%= review.campground?.images?.[0]?.url || '' %>"
+      style="width:70px; height:70px; object-fit:cover; border-radius:10px;"
+      loading="lazy"
+    >
 
     <div>
       <p class="mb-1 text-muted">Reviewed:</p>

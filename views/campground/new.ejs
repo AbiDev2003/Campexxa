@@ -38,6 +38,7 @@
         <div class="mb-3">
           <label class="form-label fw-semibold" for="description">Description</label>
           <textarea class="form-control" id="description" name="campground[description]" rows="3" required style="border-radius:12px; padding:10px 14px;"></textarea>
+          <p class="text-muted small" id="descCount">0 / 500</p>
           <div class="valid-feedback">Looks good!</div>
         </div>
 
@@ -47,7 +48,7 @@
           style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
           data-droparea="campImages"
         >
-          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" loading="lazy"/>
           <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
           <p class="text-muted small drop-subtext">or click to select files</p>
         </div>
@@ -88,3 +89,6 @@
 <script>
   const MAPBOX_TOKEN = "<%= process.env.MAPBOX_TOKEN %>";
 </script>
+
+<script defer src="/javascripts/dragdrop.js"></script>
+<script defer src="/javascripts/charCount.js"></script>

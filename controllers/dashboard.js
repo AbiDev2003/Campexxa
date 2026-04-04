@@ -142,6 +142,12 @@ module.exports.renderDashboard = async (req, res) => {
         if (response) return response;
     }
 
+    // for dynamic meta tags
+    res.locals.meta = {
+        title: "Dashboard | Campexxa",
+        description: "Manage your campgrounds, saved places and reviews.",
+        canonical: "https://campexxa.onrender.com/dashboard"
+    };
     res.render('dashboard/index', {
         tab,
         campgrounds,

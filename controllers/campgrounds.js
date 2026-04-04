@@ -212,6 +212,12 @@ module.exports.index = async (req, res) => {
 
     if (response) return response;
     
+    // for dynamic meta tag
+    res.locals.meta = {
+        title: "All Campgrounds | Campexxa",
+        description: "Browse all campgrounds, hiking trails and food spots on Campexxa.",
+        canonical: "https://campexxa.onrender.com/campgrounds"
+    };
     // render once
     return res.render("campground/index", {
         campgrounds: paginatedCampgrounds,
@@ -317,6 +323,12 @@ module.exports.showCampground = async (req, res) => {
         isSaved = req.user.savedCampgrounds.some(id => id.equals(campground._id))
     }
 
+    // for dynamic meta tags
+    res.locals.meta = {
+        title: `${campground.title} | Campexxa`,
+        description: campground.description?.slice(0, 150) || "Explore this amazing place on Campexxa",
+        canonical: `https://campexxa.onrender.com/campgrounds/${campground._id}`
+    };
     res.render("campground/show", { 
         campground,
         avgRating: ratedCamp.avgRating,

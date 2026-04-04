@@ -86,7 +86,7 @@
           class="border border-2 border-secondary bg-light d-flex flex-column justify-content-center align-items-center mb-3"
           style="height: 140px; border-style: dashed; border-radius: 12px; cursor: pointer;"
         >
-          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" />
+          <img class="upload-img" src="/images/cloud-upload.png" alt="upload picture" loading="lazy"/>
           <p class="mb-1 fw-semibold drop-text">Drag & drop images here</p>
           <p class="text-muted small drop-subtext">or click to select files</p>
         </div>
@@ -127,6 +127,7 @@
                     crossorigin="anonymous"
                     class="img-fluid rounded img-thumbnail"
                     alt="camp image <%= i %>"
+                    loading="lazy"
                   >
 
                   <!-- Checkbox -->
@@ -161,3 +162,7 @@
 <script>
   const MAPBOX_TOKEN = "<%= process.env.MAPBOX_TOKEN %>";
 </script>
+
+<script defer src="/javascripts/checkBoxSelect.js"></script>
+<script defer src="/javascripts/dragdrop.js"></script>
+<script defer src="/javascripts/charCount.js"></script>
