@@ -1,4 +1,4 @@
-<h5 class="mb-2">My Saved Spots</h5>
+<h3 class="mb-2">My Saved Spots</h3>
 <p class="text-muted"><%= totalSaved %> total <%=totalSaved.length > 1 ? 'spots' : 'spot' %> </p>
 
 <%- include('../partials/selectableGrid', {
@@ -18,16 +18,11 @@ let page = <%= page %>;
 let hasMore = <%= hasMoreSaved %>;
 let loading = false;
 
-console.log('[SAVED INIT]', { page, hasMore });
-
 const btn = document.getElementById('loadMoreBtn');
 const container = document.getElementById('campGrid');
 
-console.log('[SAVED ELEMENTS]', { btn, container });
-
 if (btn) {
   btn.addEventListener('click', async () => {
-    console.log('[SAVED CLICK]', { page, hasMore, loading });
 
     if (loading || !hasMore) {
       console.warn('[SAVED BLOCKED]', { loading, hasMore });
