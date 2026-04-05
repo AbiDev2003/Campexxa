@@ -15,7 +15,7 @@ const opts = {
 const reviewSchema = new Schema({
     body: String, 
     rating: Number, 
-    auther: {
+    author: {
         type: Schema.Types.ObjectId, 
         ref: 'User'
     }, 
