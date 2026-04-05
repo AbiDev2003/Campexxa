@@ -1,6 +1,7 @@
 <% layout('layouts/boilerplate') %>
-<link rel="stylesheet" href="/stylesheets/stars.css">
+<!-- <link rel="stylesheet" href="/stylesheets/stars.css"> -->
 <link crossorigin="anonymous" href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="/stylesheets/campgrounds.css" />
 <style>
   .card-hover:hover {
     box-shadow: 0 0 40px rgba(0,123,255,0.55);
@@ -12,13 +13,13 @@
   <div class="d-flex justify-content-between align-items-center mb-1">
 
     <!-- Filters Button (LEFT) -->
-    <button class="btn btn-primary" id="filterToggle">
+    <button class="btn btn-primary" id="filterToggle" aria-label="Open filters">
       ☰ Filters
     </button>
 
     <!-- Sort Dropdown (RIGHT) -->
     <div class="d-flex align-items-center">
-      <label class="me-2 text-muted fw-semibold mb-0">Sort by:</label>
+      <label for="campground-sort" class="me-2 text-muted fw-semibold mb-0">Sort by:</label>
       <select id="campground-sort" class="form-select" style="width: 180px;">
         <option value="">Sort by</option>
         <option value="newest">Newest first</option>
@@ -44,7 +45,6 @@
   </div>
   
     <div class="container my-4">
-      <!-- <h1 class="camp-header">All Campgrounds</h1> -->
       <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
         <% for(let campground of campgrounds){ %>
           <div class="col">
@@ -125,10 +125,34 @@ if (btn) {
 }
 </script>
 
-<script src="/javascripts/geoLocation.js"></script>
-<script defer src="/javascripts/clusterMap.js"></script>
+<script defer src="/javascripts/geoLocation.js"></script>
 <script defer src="/javascripts/sort.js"></script>
+<!-- <script defer src="/javascripts/clusterMap.js"></script> -->
 
-<script crossorigin="anonymous" src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js" ></script>
+<!-- <script crossorigin="anonymous" src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js" ></script> -->
+
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+
+    // Load Mapbox JS
+    const mapScript = document.createElement("script");
+    mapScript.src = "https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js";
+
+    mapScript.onload = () => {
+
+      // AFTER mapbox loads → load your map file
+      const clusterScript = document.createElement("script");
+      clusterScript.src = "/javascripts/clusterMap.js";
+
+      document.body.appendChild(clusterScript);
+    };
+
+    document.body.appendChild(mapScript);
+
+  }, 1500); // small delay
+});
+</script>
+
 
 

@@ -5,7 +5,7 @@
     
     <div class="card-body p-4 p-md-5">
 
-      <h2 class="text-center mb-4 fw-bold text-dark">Create New Campground</h2>
+      <h3 class="text-center mb-4 fw-bold text-dark">Create New Campground</h3>
 
       <form action="/campgrounds" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
 
@@ -67,6 +67,7 @@
           class="form-control" 
           style="display:none;" 
           data-fileinput="campImages" 
+          alt="hidden file"
         />
 
         <!-- Submit -->
@@ -92,3 +93,4 @@
 
 <script defer src="/javascripts/dragdrop.js"></script>
 <script defer src="/javascripts/charCount.js"></script>
+<script defer src="/javascripts/validateForms.js"></script>

@@ -1,13 +1,14 @@
+<link rel="stylesheet" href="/stylesheets/filters.css">
 <aside class="filters-sidebar">
 
     <!-- left filter sidebar -->
-    <h4 class="text-bold mb-4">Filters</h4>
+    <h2 class="text-bold mb-4">Filters</h2>
 
     <!-- location dynamic searching -->
     <div class="filter-section">
-      <h6 class="filter-title">
+      <h2 class="filter-title">
         LOCATIONS
-      </h6>
+      </h2>
       <input type="text" id="locationFilterInput" class="form-control mb-2" placeholder="Search location..." autocomplete="off" />
       <div id="selectedLocations" class="mb-2"></div>
       <div id="locationOptions"></div>
@@ -15,67 +16,67 @@
 
     <!-- date posted filter (linkdin style, can change url with seconds) -->
     <div class="filter-section mt-4">
-      <h6 class="filter-title">DATE POSTED</h6>
+      <h2 class="filter-title">DATE POSTED</h2>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="86400">
-        <label class="form-check-label">Last 24 hours</label>
+        <input id="date1" class="form-check-input date-filter" type="checkbox" value="86400">
+        <label class="form-check-label" for="date1">Last 24 hours</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="604800">
-        <label class="form-check-label">Last 7 days</label>
+        <input id="date2" class="form-check-input date-filter" type="checkbox" value="604800">
+        <label for="date2" class="form-check-label">Last 7 days</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="2592000">
-        <label class="form-check-label">Last 30 days</label>
+        <input id="date3" class="form-check-input date-filter" type="checkbox" value="2592000">
+        <label for="date3" class="form-check-label">Last 30 days</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="7776000">
-        <label class="form-check-label">Last 3 months</label>
+        <input id="date4" class="form-check-input date-filter" type="checkbox" value="7776000">
+        <label for="date4" class="form-check-label">Last 3 months</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="15552000">
-        <label class="form-check-label">Last 6 months</label>
+        <input id="date5" class="form-check-input date-filter" type="checkbox" value="15552000">
+        <label for="date5" class="form-check-label">Last 6 months</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input date-filter" type="checkbox" value="31536000">
-        <label class="form-check-label">Last 1 year</label>
+        <input id="date6" class="form-check-input date-filter" type="checkbox" value="31536000">
+        <label for="date6" class="form-check-label">Last 1 year</label>
       </div>
     </div>
 
     <!-- ratings filter -->
     <div class="filter-section mt-4">
-      <h6 class="filter-title">RATINGS</h6>
+      <h2 class="filter-title">RATINGS</h2>
 
       <div class="form-check">
-        <input class="form-check-input rating-filter" type="checkbox" value="5">
-        <label class="form-check-label"><span class="text-warning fs-5" >★★★★★</span></label>
+        <input id="ratings1" class="form-check-input rating-filter" type="checkbox" value="5">
+        <label for="ratings1" class="form-check-label"><span class="text-warning fs-5" >★★★★★</span></label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input rating-filter" type="checkbox" value="4">
-        <label class="form-check-label"><span class="text-warning fs-5">★★★★</span><span class="fs-5">★</span> & Up</label>
+        <input id="ratings2" class="form-check-input rating-filter" type="checkbox" value="4">
+        <label for="ratings2" class="form-check-label"><span class="text-warning fs-5">★★★★</span><span class="fs-5">★</span> & Up</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input rating-filter" type="checkbox" value="3">
-        <label class="form-check-label"><span class="text-warning fs-5">★★★</span><span class="fs-5">★★</span> & Up</label>
+        <input id="ratings3" class="form-check-input rating-filter" type="checkbox" value="3">
+        <label for="ratings3" class="form-check-label"><span class="text-warning fs-5">★★★</span><span class="fs-5">★★</span> & Up</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input rating-filter" type="checkbox" value="lt3">
-        <label class="form-check-label"><span class="text-warning fs-5">★★</span><span class="fs-5">★★★</span> & Down</label>
+        <input id="ratings4" class="form-check-input rating-filter" type="checkbox" value="lt3">
+        <label for="ratings4" class="form-check-label"><span class="text-warning fs-5">★★</span><span class="fs-5">★★★</span> & Down</label>
       </div>
     </div>
 
     <!-- PRICE FILTER -->
     <div class="filter-section mt-4">
-      <h6 class="filter-title">PRICE (Original Pricings)</h6>
+      <h2 class="filter-title">PRICE (Original Pricings)</h2>
 
       <div class="d-flex gap-2 mb-2">
         <input type="number" id="priceMin" class="form-control" placeholder="Min" min="0" />
@@ -93,33 +94,33 @@
 
     <!-- filter by distance -->
     <div class="filter-section mt-4">
-      <h6 class="filter-title">DISTANCE</h6>
+      <h2 class="filter-title">DISTANCE</h2>
 
       <div class="form-check">
-        <input class="form-check-input distance-filter" type="checkbox" value="5">
-        <label class="form-check-label">Within 5 km</label>
+        <input id="distance1" class="form-check-input distance-filter" type="checkbox" value="5">
+        <label for="distance1" class="form-check-label">Within 5 km</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input distance-filter" type="checkbox" value="10">
-        <label class="form-check-label">Within 10 km</label>
+        <input id="distance2" class="form-check-input distance-filter" type="checkbox" value="10">
+        <label for="distance2" class="form-check-label">Within 10 km</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input distance-filter" type="checkbox" value="50">
-        <label class="form-check-label">Within 50 km</label>
+        <input id="distance3" class="form-check-input distance-filter" type="checkbox" value="50">
+        <label for="distance3" class="form-check-label">Within 50 km</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input distance-filter" type="checkbox" value="100">
-        <label class="form-check-label">Within 100 km</label>
+        <input id="distance4" class="form-check-input distance-filter" type="checkbox" value="100">
+        <label for="distance4" class="form-check-label">Within 100 km</label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input distance-filter" type="checkbox" value="200">
-        <label class="form-check-label">Within 200 km</label>
+        <input id="distance5" class="form-check-input distance-filter" type="checkbox" value="200">
+        <label for="distance5" class="form-check-label">Within 200 km</label>
       </div>
     </div>
 
   </aside>
-  <script src="/javascripts/filters.js"></script>
+  <script defer src="/javascripts/filters.js"></script>

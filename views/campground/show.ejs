@@ -1,5 +1,7 @@
 <% layout('layouts/boilerplate') %>
 <link rel="stylesheet" href="/stylesheets/stars.css">
+<link rel="stylesheet" href="/stylesheets/showCampground.css">
+
 <div class="row camp-show-row">
   <div class="col-lg-6 col-12 camp-left">
     <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -12,15 +14,22 @@
         </div>
 
         <% if (campground.images.length > 1) { %>
-            <a class="carousel-control-prev" href="#campgroundCarousel" role="button" data-bs-slide="prev">
+            <a class="carousel-control-prev" href="#campgroundCarousel" role="button" data-bs-slide="prev" aria-label="Previous image">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only"></span>
             </a>
 
-            <a class="carousel-control-next" href="#campgroundCarousel" role="button" data-bs-slide="next">
+            <a class="carousel-control-next" href="#campgroundCarousel" role="button" data-bs-slide="next" aria-label="Next image">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only"></span>
             </a>
+        <% } else if(campground.images.length === 0){ %>
+          <img 
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5TZVH3oK6sqrucngNck0-XxTWdP1uFKtprQ&s" 
+            alt="no campground image"
+            class="d-block w-100"
+            style="height:350px;"
+          >
         <% } %>
     </div>
 
@@ -31,7 +40,7 @@
           <% if(isSaved){  %>
             <form action="/campgrounds/<%= campground._id %>/unsave" method="POST">
               <!-- unsave button -->
-              <button class="btn p-0 border-0 bg-transparent" style="cursor: pointer;" type="submit">
+              <button class="btn p-0 border-0 bg-transparent" style="cursor: pointer;" type="submit" aria-label="unsave campground">
                 <!-- filled -->
                 <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="black" viewBox="0 0 24 24">
                   <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/>
@@ -41,7 +50,7 @@
             <% } else{ %>
               <form action="/campgrounds/<%=campground._id %>/save" method="POST">
                 <!-- Save Button -->
-                <button class="btn p-0 border-0 bg-transparent" style="cursor: pointer;" type="submit">
+                <button class="btn p-0 border-0 bg-transparent" style="cursor: pointer;" type="submit" aria-label="save campground">
                   <!-- Outline Bookmark -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
@@ -75,7 +84,7 @@
         <div class="card-body">
           <a href="/campgrounds/<%=campground._id%>/edit" class="card-link btn btn-info">Edit</a>
           <form class="d-inline" action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-danger">Delete</button>
+            <button class="btn btn-danger" aria-label="delete campground">Delete</button>
           </form>
         </div>
       <% } %>
