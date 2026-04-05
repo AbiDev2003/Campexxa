@@ -120,7 +120,6 @@ app.use(
           "'self'", 
           ...connectSrcUrls, 
           "https://cdn.jsdelivr.net/", 
-          "https://api.sendgrid.com"
         ], 
         scriptSrc: ["'self'", "'unsafe-inline'", ...scriptSrcUrls],
         styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
@@ -130,10 +129,12 @@ app.use(
           "'self'",
           "blob:",
           "data:",
-          `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,    // ← YOUR CLOUD NAME 
+          `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/`,
           "https://images.unsplash.com/",
+          "https://encrypted-tbn0.gstatic.com/"
+          
         ],
-        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com/"],
+        fontSrc: ["'self'", "data:", "https://fonts.gstatic.com/", "https://cdn.jsdelivr.net"],
       },
     },
     crossOriginEmbedderPolicy: false, // needed for some CDNs
