@@ -16,6 +16,11 @@
   color: white !important;
 }
 
+.nav-logo{
+  height: 40px;
+  width: 140px;
+}
+
 body{
   padding-top: 70px;
 }

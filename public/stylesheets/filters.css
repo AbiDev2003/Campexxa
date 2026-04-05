@@ -1,66 +1,187 @@
-/* not in used right now !! */
-
-
-/* 🔥 MOBILE FILTER DRAWER */
-.mobile-filters-drawer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 2000;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
+.filter-section {
+  margin-bottom: 20px;
 }
 
-.mobile-filters-drawer.active {
+.filter-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+
+.form-check-label {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* ===== Location Search Input ===== */
+#locationFilterInput {
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+/* ===== Location List ===== */
+#locationOptions {
+  display: none;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+#locationOptions::-webkit-scrollbar {
+  width: 6px;
+}
+#locationOptions::-webkit-scrollbar-thumb {
+  background: #c7c9cc;
+  border-radius: 4px;
+}
+
+/* ===== Checkboxes ===== */
+#locationOptions .form-check {
+  margin-bottom: 6px;
+}
+
+#locationOptions label {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.location-item {
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.location-item:hover,
+.location-item.active {
+  background: #e5efff;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+/* ===== Selected Location Tags ===== */
+#selectedLocations{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#selectedLocations .badge{
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+#selectedLocations .badge span {
+  margin-left: 6px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#selectedLocations .badge span:hover {
+  opacity: 1;
+}
+
+/* ===== Selected Price Tags ===== */
+#selectedPrices{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+#selectedPrices .badge{
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+#selectedPrices .badge span {
+  margin-left: 6px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+#selectedPrices .badge span:hover {
+  opacity: 1;
+}
+
+/* ===== Floating Filters Panel ===== */
+
+.filters-overlay {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 320px;
+  max-height: 75vh;
+  overflow-y: auto;
+
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+
+  box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+  z-index: 999;
+
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+/* Active State */
+.filters-overlay.show {
+  transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
 
-.mobile-filters-content {
+.filter-fab {
   position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 70%;
-  background: white;
-
-  padding: 15px;
-  overflow-y: auto;
-
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  border-radius: 30px;
+  padding: 8px 16px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.mobile-filters-drawer.active .mobile-filters-content {
-  transform: translateX(0);
-}
+/* ===== Responsive ===== */
 
-.filters-sidebar {
-  position: sticky;
-  top: 90px;   
-  height: calc(100vh - 100px);
-  overflow-y: auto;
-}
-
-/* 🔥 MOBILE FILTER OVERLAY */
-@media (max-width: 992px) {
-
-  #mobileFilters {
-    position: fixed;
-    top: 70px;             /* below navbar */
+@media (max-width: 768px) {
+  .filters-overlay {
+    width: 100%;
     left: 0;
-    height: calc(100vh - 70px);
-    width: 70%;
-
-    background: white;
-    z-index: 2000;
-
-    padding: 15px;
-    overflow-y: auto;
-
-    box-shadow: 0 0 25px rgba(0,0,0,0.25);
+    top: 5px;
+    max-height: 70vh;
   }
 
+  .filter-fab {
+    left: 10px;
+    top: 10px;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .filters-sidebar {
+    margin-bottom: 15px;
+    width: 100%;
+  }
+  #filterToggle{
+    width: 20vw;
+    padding: 0.4rem;
+  }
 }
