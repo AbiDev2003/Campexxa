@@ -7,11 +7,12 @@
       src="<%= review.campground?.images?.[0]?.url || '' %>"
       style="width:70px; height:70px; object-fit:cover; border-radius:10px;"
       loading="lazy"
+      alt="reviewed spot image"
     >
 
     <div>
       <p class="mb-1 text-muted">Reviewed:</p>
-      <h5 class="mb-1 fw-semibold"><%= review.campground.title %></h5>
+      <h4 class="mb-1 fw-semibold"><%= review.campground.title %></h4>
 
       <small class="text-muted">
         📍 <%= review.campground.location %> • 

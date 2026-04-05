@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/stylesheets/reviewCard.css">
+<link rel="stylesheet" href="/stylesheets/stars.css">
 <div class="card mb-2 review-card">
   <div class="card-body position-relative pt-4">
 
@@ -9,13 +11,14 @@
           class="rounded-circle"
           style="width:35px; height:35px; object-fit:cover;"
           loading="lazy"
+          alt="profile image"
         >
       <% } else { %>
         <div class="profile-initial">
           <%= review.auther.profileInitial %>
         </div>
       <% } %>
-      <h5 class="fw-bold mb-0"><%= review.auther.firstName %></h5>
+      <h4 class="fw-bold mb-0"><%= review.auther.firstName %></h4>
     </div>
 
     <!-- RATING -->
@@ -34,6 +37,7 @@
             data-gallery="review-<%= review._id %>"
             data-full="<%= img.url %>"
             loading="lazy"
+            alt="review images"
           >
         <% }) %>
       </div>
@@ -43,10 +47,13 @@
     <% if (currentUser && review.auther._id.equals(currentUser._id)) { %>
       <div class="dropdown" style="position:absolute; top:15px; right:15px;">
         
-        <button class="btn btn-link p-0 text-dark" 
-                type="button" 
-                data-bs-toggle="dropdown"
-                style="font-size:22px;">
+        <button 
+          class="btn btn-link p-0 text-dark" 
+          type="button" 
+          data-bs-toggle="dropdown"
+          style="font-size:22px;"
+          aria-label="review info"
+        >
           
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
             fill="currentColor" class="bi bi-three-dots-vertical">
