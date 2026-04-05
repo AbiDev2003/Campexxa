@@ -39,8 +39,13 @@ module.exports.showAllReviews = async (req, res) => {
     const campground = await Campground.findById(campId)
         .populate({
             path: "reviews",
-            populate: { path: "auther" }
+            populate: { 
+                path: "auther", 
+                select: "firstName profileImage profileInitial fullName"
+            }, 
+            select: "rating body images createdAt auther"
         })
+        .lean({ virtuals: true });
 
     if (!campground) {
         req.flash("error", "Campground not found!");
