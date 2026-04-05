@@ -5,13 +5,13 @@
   <div class="card shadow-lg border-0" style="width: 100%; max-width: 650px; border-radius: 18px; background:#f8f9fa;">
     <div class="card-body p-4 p-md-5">
 
-      <h2 class="text-center mb-4 fw-bold text-dark">Leave a Review</h2>
+      <h3 class="text-center mb-4 fw-bold text-dark">Leave a Review</h3>
 
       <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
         
         <!-- Stars -->
         <fieldset class="starability-grow mb-3">
-          <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked />
+          <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" aria-label="checked" checked />
           <input type="radio" id="rate1" name="review[rating]" value="1" />
           <label for="rate1" title="Terrible">1 star</label>
 
@@ -30,7 +30,7 @@
 
         <!-- Text -->
         <div class="mb-3">
-          <label class="form-label fw-semibold">Your Review</label>
+          <label for="reviewBody" class="form-label fw-semibold">Your Review</label>
           <textarea 
             class="form-control" 
             id="reviewBody"
@@ -91,3 +91,4 @@
 
 <script defer src="/javascripts/dragdrop.js"></script>
 <script defer src="/javascripts/charCount.js"></script>
+<script defer src="/javascripts/validateForms.js"></script>
