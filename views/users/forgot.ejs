@@ -3,13 +3,13 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="auth-content">
-      <h2 class="auth-title">Forgot Password</h2>
+      <h3 class="auth-title">Forgot Password</h3>
       <p class="auth-sub">Enter your email to receive a reset link</p>
   
       <form action="/forgot-password" method="POST">
-        <label class="auth-label fw-semibold">Email</label>
-        <input class="auth-input" type="email" name="email" required>
-        <button class="auth-btn-primary mt-3" type="submit">Send reset link</button>
+        <label for="email" class="auth-label fw-semibold">Email</label>
+        <input class="auth-input" id="email" type="email" name="email" required>
+        <button class="auth-btn-primary mt-3" type="submit" style="background-color: #027e02;">Send reset link</button>
       </form>
     </div>
   </div>
