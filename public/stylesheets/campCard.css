@@ -1,0 +1,11 @@
+.camp-view-btn {
+  background: #0d6efd !important; /* bright bootstrap blue */
+  color: white !important;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
