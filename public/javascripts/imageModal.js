@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let index = 0;
 
   function openModal(list, startIndex) {
+    if (!list || !list.length) return;
     images = list;
     index = startIndex;
     updateImage();
@@ -55,10 +56,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("img[data-gallery]").forEach((imgEl) => {
     imgEl.addEventListener("click", () => {
       const group = imgEl.dataset.gallery;
+      if(!group) return; 
       const groupImages = [...document.querySelectorAll(`img[data-gallery="${group}"]`)]
-        .map(i => i.dataset.full || i.src);
+        .map(i => i.dataset.full || i.src)
+        .filter(Boolean); 
+      
+      if (!groupImages.length) return;
 
       const startIndex = groupImages.indexOf(imgEl.dataset.full || imgEl.src);
+      if(startIndex === -1) return; 
       openModal(groupImages, startIndex);
     });
   });

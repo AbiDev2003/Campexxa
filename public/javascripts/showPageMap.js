@@ -1,10 +1,10 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
   container: "map",
-  style: "mapbox://styles/mapbox/outdoors-v12", // Use the standard style for the map
-  projection: "globe", // display the map as a globe
-  zoom: 1, // initial zoom level, 0 is the world view, higher values zoom in
-  center: campground.geometry.coordinates, // center the map on this longitude and latitude
+  style: "mapbox://styles/mapbox/outdoors-v12", 
+  projection: "globe", 
+  zoom: 1, 
+  center: campground.geometry.coordinates, 
   projection: "mercator"
 });
 
@@ -21,7 +21,6 @@ new mapboxgl.Marker({ color: "#0A3D62" })
 map.addControl(new mapboxgl.NavigationControl());
 map.scrollZoom.disable();
 
-// get direction in google maps
 const openGoogleMapsBtn = document.getElementById("openGoogleMapsBtn");
 openGoogleMapsBtn.addEventListener("click", () => {
   const [lng, lat] = campground.geometry.coordinates;
