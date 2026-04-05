@@ -10,8 +10,11 @@ const { computeRating } = require('../utils/campgroundHelpers');
 const { getPagination, getHasMore } = require('../utils/paginate');
 const { sendPaginatedResponse } = require('../utils/sendPaginatedResponse');
 
+let campCache = null;
+let campCacheTime = null;
+const CACHE_TTL = 30 * 1000; // 30 seconds
+
 module.exports.index = async (req, res) => {
-    
     const search = req.query.search?.trim() || "";
     const selectedLocations = req.query.location
         ? req.query.location.split(",")
@@ -96,9 +99,22 @@ module.exports.index = async (req, res) => {
         .lean({virtuals: true});
 
     } else {
-        camps = await Campground.find(mongoQuery)
-            .populate({ path: "reviews", select: "rating" })
-            .lean({virtuals: true});
+        const isDefaultQuery = !search && !selectedLocations.length && 
+                       !req.query.bbox && !req.query.price && 
+                       !req.query.lat && !req.query.postedWithin;
+        if(isDefaultQuery && campCache && (Date.now() - campCacheTime < CACHE_TTL)){
+            camps = campCache;
+        } else {
+            camps = await Campground.find(mongoQuery)
+                .populate({ path: "reviews", select: "rating" })
+                // .select("title location description images createdAt geometry")
+                .lean({virtuals: true});
+
+            if (isDefaultQuery) {
+                campCache = camps;
+                campCacheTime = Date.now();
+            }
+        }
     }
 
     let campgroundsWithRatings = attachRatings(camps);
