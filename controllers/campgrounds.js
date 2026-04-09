@@ -14,6 +14,10 @@ let campCache = null;
 let campCacheTime = null;
 const CACHE_TTL = 30 * 1000; // 30 seconds
 
+function escapeRegex(text) {
+    return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 module.exports.index = async (req, res) => {
     const search = req.query.search?.trim() || "";
     const selectedLocations = req.query.location
@@ -26,7 +30,12 @@ module.exports.index = async (req, res) => {
         mongoQuery.location = { $in: selectedLocations };
     }
     if (search) {
-        mongoQuery.title = new RegExp(search, "i");
+        // mongoQuery.title = new RegExp(search, "i");
+        if (search.length > 50) {
+            return res.status(400).send("Invalid search");
+        }
+        const safeSearch = escapeRegex(search);
+        mongoQuery.title = { $regex: safeSearch, $options: "i" };
     }
 
     // 🔹 GEOMETRY-BASED LOCATION FILTER
@@ -240,7 +249,7 @@ module.exports.index = async (req, res) => {
         search, 
         selectedLocations, 
         sort,
-        page, 
+        page,    
         hasMore
     });
 };
