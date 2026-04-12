@@ -124,37 +124,12 @@ router.get(
 
 // redudant route added for facebook oauth
 router.get("/privacy-policy", (req, res) => {
-  res.send(`
-    <h1>Privacy Policy - Campexxa</h1>
-    <p>Campexxa uses authentication providers like Google, GitHub, and Facebook only to log users into the platform.</p>
-    <p>We collect basic account information such as name and email address for authentication and account management.</p>
-    <p>We do not sell or share personal data with third parties.</p>
-    <p>If you wish to remove your data, please see our data deletion instructions.</p>
-  `);
+  res.render('static/privacy');
 });
 
 // delete data, fb oauth
 router.get("/data-deletion", (req, res) => {
-  res.setHeader("Content-Type", "text/html");
-  res.send(`
-    <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Data Deletion - Campexxa</title>
-      </head>
-      <body>
-        <h1>Data Deletion Instructions - Campexxa</h1>
-
-        <p>If you want to delete your data:</p>
-        <ul>
-          <li>Login and request deletion</li>
-          <li>Or email: 2003abinashdash@gmail.com</li>
-        </ul>
-
-        <p>Data will be deleted within 7 days.</p>
-      </body>
-      </html>
-    `);
+  res.render('static/privacy');
 });
 
 module.exports = router; 
