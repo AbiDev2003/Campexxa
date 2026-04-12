@@ -256,6 +256,11 @@ module.exports.index = async (req, res) => {
 
 
 module.exports.renderNewForm = async (req, res) => {
+    res.locals.meta = {
+        title: "New Campground | Campexxa",
+        description: "Create a new campground listing on Campexxa and share your favorite spots with the community.",
+        canonical: "https://campexxa.onrender.com/campgrounds/new"
+    };
     res.render("campground/new");
 }
 
@@ -309,7 +314,9 @@ module.exports.createCampground = async (req, res) => {
     campground.currency = currencyCode; //from dropdown
     campground.currencySymbol = currencySymbol;
     await campground.save();
-    console.log("New campground saved"); 
+    
+    campCache = null;
+    campCacheTime = null;
     
     req.flash("success", "Successfully made a new campground!");
     res.redirect(`campgrounds/${campground._id}`);
@@ -371,6 +378,11 @@ module.exports.renderEditForm = async(req, res) => {
         req.flash('error', 'Campground not found !')
         return res.redirect('/campgrounds')
     }
+    res.locals.meta = {
+        title: "Edit Campground | Campexxa",
+        description: "Edit your campground listing on Campexxa and keep your information up to date.",
+        canonical: `https://campexxa.onrender.com/campgrounds/${campground._id}/edit`
+    };
     res.render('campground/edit', { campground }); 
 }
 
@@ -435,6 +447,9 @@ module.exports.updateCampground = async (req, res) => {
     // 5️⃣ Save everything
     await campground.save();
 
+    campCache = null;
+    campCacheTime = null;
+
     req.flash("success", "Campground updated successfully!");
     res.redirect(`/campgrounds/${campground._id}`);
 };
@@ -443,6 +458,8 @@ module.exports.deleteCampground = async(req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndDelete(id, { ...req.body.campground }, { new: true });
     // const campground = await Campground.findByIdAndDelete(id);
+    campCache = null;
+    campCacheTime = null;
     req.flash('success', 'Campground deleted successfully!');
     res.redirect(`/campgrounds`);
 }

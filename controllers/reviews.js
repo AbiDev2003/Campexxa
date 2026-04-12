@@ -162,6 +162,12 @@ module.exports.renderAddReview = async (req, res) => {
         req.flash('error', 'Campground not found!');
         return res.redirect('/campgrounds');
     }
+    // for dynamic meta tags
+    res.locals.meta = {
+        title: "Add Review | Campexxa",
+        description: "Share your experience and insights about this campground by adding a review on Campexxa.",
+        canonical: `https://campexxa.onrender.com/campgrounds/${campId}/reviews/addReview`
+    };
     res.render('reviews/addReview', { campground });
 };
 
@@ -177,6 +183,12 @@ module.exports.renderEditReview = async (req, res) => {
         return res.redirect(`/campgrounds/${campId}/reviews`);
     }
 
+    // for dynamic meta tags
+    res.locals.meta = {
+        title: "Edit Review | Campexxa",
+        description: "Make changes to your review and update it on Campexxa to keep it accurate and helpful for others.",
+        canonical: `https://campexxa.onrender.com/campgrounds/${campId}/reviews/${reviewId}/edit`
+    };
     res.render('reviews/editReview', { campground, review, redirectTo: req.query.redirectTo });
 };
 

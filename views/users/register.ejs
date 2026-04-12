@@ -10,6 +10,7 @@
       <h2 class="auth-title">Create your account</h2>
       <p class="auth-sub">Join Campexxa and explore freely</p>
       <form action="/register" method="POST" class="auth-form" id="registerForm">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
 
         <label class="auth-label fw-semibold" for="fullName">Full Name</label>
         <input class="auth-input" type="text" id="fullName" name="fullName" placeholder="John Doe" required>

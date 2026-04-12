@@ -1,4 +1,10 @@
-mapboxgl.accessToken = mapToken;
+const campgrounds = {
+  features: JSON.parse(
+    document.getElementById("campgrounds-data").dataset.features
+  )
+};
+
+mapboxgl.accessToken = window.APP_CONFIG.mapboxToken;
 const map = new mapboxgl.Map({
   container: "cluster-map",
   style: "mapbox://styles/mapbox/outdoors-v12",

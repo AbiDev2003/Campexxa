@@ -24,7 +24,6 @@ const loginLimiter = rateLimit({
   }
 });
 
-
 router.route('/register')
     .get(users.renderRegister)
     .post(catchAsync (users.register))
@@ -32,7 +31,30 @@ router.route('/register')
 router.route('/login')
     .get(users.renderLogin)
     .post(
-      loginLimiter,
+        loginLimiter,
+        // validation to escape sql injection for ZAP testing
+        (req, res, next) => {
+          let { username, password } = req.body;
+
+          username = username?.trim();
+          password = password?.trim();
+
+          if (!username || !password) {
+            req.flash('error', 'Invalid credentials');
+            return res.redirect('/login');
+          }
+
+          // limit length (important)
+          if (username.length > 100 || password.length > 100) {
+            req.flash('error', 'Invalid credentials');
+            return res.redirect('/login');
+          }
+
+          req.body.username = username;
+          req.body.password = password;
+
+          next();
+        },
         // Save returnTo to res.locals BEFORE passport.authenticate
         (req, res, next) => {
             if (req.session.returnTo) {
@@ -112,27 +134,27 @@ router.get("/privacy-policy", (req, res) => {
 });
 
 // delete data, fb oauth
-// router.get("/data-deletion", (req, res) => {
-//   res.setHeader("Content-Type", "text/html");
-//   res.send(`
-//     <!DOCTYPE html>
-// <html>
-// <head>
-//   <title>Data Deletion - Campexxa</title>
-// </head>
-// <body>
-//   <h1>Data Deletion Instructions - Campexxa</h1>
+router.get("/data-deletion", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send(`
+    <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Data Deletion - Campexxa</title>
+      </head>
+      <body>
+        <h1>Data Deletion Instructions - Campexxa</h1>
 
-//   <p>If you want to delete your data:</p>
-//   <ul>
-//     <li>Login and request deletion</li>
-//     <li>Or email: 2003abinashdash@gmail.com</li>
-//   </ul>
+        <p>If you want to delete your data:</p>
+        <ul>
+          <li>Login and request deletion</li>
+          <li>Or email: 2003abinashdash@gmail.com</li>
+        </ul>
 
-//   <p>Data will be deleted within 7 days.</p>
-// </body>
-// </html>
-//     `);
-// });
+        <p>Data will be deleted within 7 days.</p>
+      </body>
+      </html>
+    `);
+});
 
 module.exports = router; 

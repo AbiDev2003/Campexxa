@@ -21,19 +21,11 @@
   </div>
 </div>
 <%- include('../partials/confirmModal') %>
-<script>
-  const confirmModal = document.getElementById('confirmModal');
 
-  confirmModal.addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget;
+<body 
+  data-page="<%= page %>" 
+  data-hasmore="<%= tab === 'saved' ? hasMoreSaved : hasMoreCampgrounds %>"
+  data-tab="<%= tab %>">
 
-    const action = button.getAttribute('data-action');
-    const message = button.getAttribute('data-message');
-
-    const form = confirmModal.querySelector('#confirmForm');
-    const msg = confirmModal.querySelector('#confirmMessage');
-
-    form.action = action;
-    msg.textContent = message || "This action cannot be undone. Are you sure?";
-  });
-</script>
+<script src="/javascripts/confirmModal.js"></script>
+<script src="/javascripts/loadMore.js"></script>

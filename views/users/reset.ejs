@@ -8,16 +8,16 @@
     <p class="auth-sub">Enter your new password</p>
 
     <form action="/reset/<%= token %>" method="POST" id="registerForm">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       <%- include('../partials/passwordFields', {
-        passwordLabel: "New Password",
+        passwordLabel: "New password",
         passwordPlaceholder: "Enter new password",
-        confirmLabel: "Confirm New Password",
+        confirmLabel: "Confirm new password",
         confirmPlaceholder: "Confirm new password"
       }) %>
       <a href="/reset/<%=token %>/skip" class="text-center">Skip for now</a>
       <button class="auth-btn-primary mt-3" type="submit">Reset Password</button>
     </form>
-
   </div>
   </div>
 </div>

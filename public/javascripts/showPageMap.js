@@ -1,4 +1,8 @@
-mapboxgl.accessToken = mapToken;
+const campground = JSON.parse(
+  document.getElementById("camp-data").dataset.camp
+);
+
+mapboxgl.accessToken = window.APP_CONFIG.mapboxToken;
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v12", 

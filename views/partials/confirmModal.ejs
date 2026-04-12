@@ -23,6 +23,7 @@
 
         <!-- Dynamic form -->
         <form id="confirmForm" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           <button class="btn btn-danger fw-semibold">
             Yes
           </button>

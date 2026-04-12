@@ -1,5 +1,4 @@
 <% layout('layouts/boilerplate') %>
-<!-- <link rel="stylesheet" href="/stylesheets/stars.css"> -->
 <link crossorigin="anonymous" href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="/stylesheets/campgrounds.css" />
 <style>
@@ -59,100 +58,21 @@
   </main>
 </div>
 
+<body 
+  data-mapbox="<%= process.env.MAPBOX_TOKEN %>"
+  data-page="<%= page %>"
+  data-hasmore="<%= hasMore %>">
 
-<script>
-  const mapToken = '<%-process.env.MAPBOX_TOKEN %>';
-  const campgrounds = { features: <%- JSON.stringify(campgrounds) %>} 
-</script>
+<div id="campgrounds-data" data-features='<%- JSON.stringify(campgrounds) %>'></div>
 
-<script>
-  const filterBtn = document.getElementById("filterToggle");
-  const filtersPanel = document.getElementById("filtersPanel");
-  filterBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    filtersPanel.classList.toggle("show");
-  });
-  // by clicking inside filter , it does not closed
-  filtersPanel.addEventListener("click", (e) => {
-    e.stopPropagation();
-  })
-  // by clicking in window outside filter it get closed 
-  window.addEventListener("click", () => {
-    if(filtersPanel.classList.contains("show")){
-      filtersPanel.classList.remove("show"); 
-    }
-  })
-</script>
+<script src="/javascripts/config.js"></script>
+<script src="/javascripts/map.js"></script>
 
-<script>
-let page = <%= page %>;
-let hasMore = <%= hasMore %>;
-let loading = false;
-
-const btn = document.getElementById('loadMoreBtn');
-const container = document.querySelector('.row');
-
-if (btn) {
-  btn.addEventListener('click', async () => {
-    if (loading || !hasMore) return;
-
-    loading = true;
-    btn.textContent = "Loading...";
-
-    page++;
-
-    const url = new URL(window.location.href);
-    url.searchParams.set('page', page);
-
-    const res = await fetch(url, {
-      headers: { 'Accept': 'application/json' }
-    });
-
-    const data = await res.json();
-
-    // ✅ append HTML directly
-    container.insertAdjacentHTML('beforeend', data.html);
-
-    hasMore = data.hasMore;
-    loading = false;
-
-    if (!hasMore) {
-      btn.remove();
-    } else {
-      btn.textContent = "Load More";
-    }
-  });
-}
-</script>
-
+  
 <script defer src="/javascripts/geoLocation.js"></script>
 <script defer src="/javascripts/sort.js"></script>
-<!-- <script defer src="/javascripts/clusterMap.js"></script> -->
-
-<!-- <script crossorigin="anonymous" src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js" ></script> -->
-
-<script>
-window.addEventListener("load", () => {
-  setTimeout(() => {
-
-    // Load Mapbox JS
-    const mapScript = document.createElement("script");
-    mapScript.src = "https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js";
-
-    mapScript.onload = () => {
-
-      // AFTER mapbox loads → load your map file
-      const clusterScript = document.createElement("script");
-      clusterScript.src = "/javascripts/clusterMap.js";
-
-      document.body.appendChild(clusterScript);
-    };
-
-    document.body.appendChild(mapScript);
-
-  }, 1500); // small delay
-});
-</script>
+<script defer src="/javascripts/indexPage.js"></script>
+<script src="/javascripts/loadMore.js"></script>
 
 
 

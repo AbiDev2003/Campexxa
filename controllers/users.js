@@ -88,11 +88,27 @@ module.exports.renderForgot = (req, res) => {
 
 // Handle forgot: create hashed token, save, email raw token link (raw token sent by email)
 module.exports.handleForgotPassword = async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email?.trim().toLowerCase();
   const genericMsg = 'If an account with that email exists, we have sent a reset link.';
 
+  // email validation
+  if(!email || typeof email !== 'string'){
+    req.flash('success', genericMsg); 
+    res.redirect('/login'); 
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) {
+    req.flash('success', genericMsg);
+    return res.redirect('/login');
+  }
+
+  if (email.length > 100) {
+    req.flash('success', genericMsg);
+    return res.redirect('/login');
+  }
+
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email });
 
     if (!user) {
       req.flash('success', genericMsg);
@@ -120,6 +136,7 @@ module.exports.handleForgotPassword = async (req, res) => {
         html: `
           <div style="font-family: Arial, sans-serif; text-align: center; padding: 20px;">
             <h2 style="color: #333;">Hello 👋</h2>
+            <h3>From Campexxa</h3>
             <p style="font-size: 16px; color: #555;">
               Click the button below to continue,
               <br/>

@@ -160,29 +160,5 @@
 
 </div>
 
-<script>
-  document.getElementById("reviewSort")?.addEventListener("change", function () {
-    const selected = this.value;
-    const url = new URL(window.location.href);
-
-    url.searchParams.set("sort", selected);
-    url.searchParams.set("page", 1); // reset to first page on sort change
-
-    window.location.href = url.toString();
-  });
-</script>
-
-<script>
-  // Change reviews per page
-  document.getElementById("reviewsPerPage")?.addEventListener("change", function () {
-    const newLimit = this.value;
-    const url = new URL(window.location.href);
-
-    url.searchParams.set("limit", newLimit);
-    url.searchParams.set("page", 1); // reset to page 1
-
-    window.location.href = url.toString();
-  });
-</script>
-
+<script src="/javascripts/reviewPage.js"></script>
 

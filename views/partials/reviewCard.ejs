@@ -72,6 +72,7 @@
           <li>
             <form method="POST"
               action="/campgrounds/<%= campId %>/reviews/<%= review._id %>?_method=DELETE">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <input type="hidden" name="redirectTo" value="<%= currentUrl %>">
               <button class="dropdown-item text-danger">Delete</button>
             </form>

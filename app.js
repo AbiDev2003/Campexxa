@@ -14,6 +14,8 @@ const passport = require('passport')
 const helmet = require('helmet');
 const sanitizeV5 = require('./utils/mongoSanitizeV5'); 
 const compression = require('compression'); 
+const csurf = require('csurf');
+const csrfProtection = csurf();
 
 const app = express(); 
 app.set('query parser', 'extended');
@@ -121,7 +123,8 @@ app.use(
           ...connectSrcUrls, 
           "https://cdn.jsdelivr.net/", 
         ], 
-        scriptSrc: ["'self'", "'unsafe-inline'", ...scriptSrcUrls],
+        scriptSrc: ["'self'", ...scriptSrcUrls],
+        scriptSrcAttr: ["'none'"],
         styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
         workerSrc: ["'self'", "blob:"],
         objectSrc: ["'none'"],
@@ -147,11 +150,6 @@ app.use(passport.session())
 const configurePassport = require("./config/passport");
 configurePassport(passport);
 
-// app.use((req, res, next) => {
-//   if (req.skipSanitize) return next();
-//   sanitizeV5({ replaceWith: '_' })(req, res, next);
-// });
-
 // flash middleware
 app.use((req, res, next) => { 
     res.locals.currentUser = req.user; 
@@ -166,8 +164,27 @@ app.use((req, res, next) => {
     next(); 
 })
 
-app.use('/', userRoutes)
 app.use('/api', apiRoutes);
+
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  const isMultipart = contentType.includes('multipart/form-data');
+  if (isMultipart) {
+    req.skipCSRF = true;
+    return next();
+  }
+  csrfProtection(req, res, next);
+});
+
+app.use((req, res, next) => {
+  if (req.skipCSRF) {
+    return next();
+  }
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use('/', userRoutes)
 app.use('/campgrounds', campgroundsRoutes) //campgrounds route
 app.use('/campgrounds/:campId/reviews', reviewsRoutes) //review route
 app.use('/dashboard', dashboardRoutes) //dashboard route
@@ -182,9 +199,6 @@ app.all(/(.*)/, (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    // const { statusCode = 500 } = err;
-    // if (!err.message) err.message = 'Oh No, Something Went Wrong!'
-    // res.status(statusCode).render('error', { err })
 
     console.error("🔥 ERROR START ==========");
     console.error(err.stack || err);

@@ -9,6 +9,7 @@
 
       <form action="/campgrounds" method="POST" class="validated-form" enctype="multipart/form-data" novalidate>
 
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         <!-- Title -->
         <div class="mb-3">
           <label class="form-label fw-semibold" for="title">Title</label>
@@ -87,9 +88,10 @@
   </div>
 </div>
 
-<script>
-  const MAPBOX_TOKEN = "<%= process.env.MAPBOX_TOKEN %>";
-</script>
+<body data-mapbox="<%= process.env.MAPBOX_TOKEN %>"></body>
+
+<script src="/javascripts/config.js"></script>
+<script src="/javascripts/map.js"></script>
 
 <script defer src="/javascripts/dragdrop.js"></script>
 <script defer src="/javascripts/charCount.js"></script>
