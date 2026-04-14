@@ -231,7 +231,7 @@ Verified core REST API endpoints for status codes (200, 302, 401), authenticatio
 > Audited across 10 consecutive tests on the live deployment.
 
 > **Production-Ready Backend:** This comprehensive testing architecture ensures high reliability and 100% functional coverage. 
-> 📂 **View Test Implementation:** [Jest & Supertest](https://github.com/AbiDev2003/Campexxa/tree/main/tests) | [Artillery Config](https://github.com/AbiDev2003/Campexxa/tree/main/artillery) | [Postman Collections](https://github.com/AbiDev2003/Campexxa/tree/main/postman)
+> 📂 **View Test Implementation:** [Jest & Supertest](https://github.com/AbiDev2003/Campexxa/tree/main/tests) | [Artillery Config](https://github.com/AbiDev2003/Campexxa/tree/main/artillery-tests) | [Postman Collections](https://github.com/AbiDev2003/Campexxa/tree/main/docs)
 
 ## 🔮 Future Improvements
 
