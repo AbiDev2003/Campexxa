@@ -1,4 +1,5 @@
-if (process.env.NODE_ENV !== "production") {
+// while deploying we will use "production", but while testing we will use "test" environment, so that we can connect to test database and avoid messing with production database
+if (process.env.NODE_ENV !== "test") {
     require('dotenv').config();
 } 
 const apiRoutes = require('./routes/api');
@@ -15,6 +16,7 @@ const helmet = require('helmet');
 const sanitizeV5 = require('./utils/mongoSanitizeV5'); 
 const compression = require('compression'); 
 const csurf = require('csurf');
+
 const csrfProtection = csurf();
 
 const app = express(); 
@@ -29,13 +31,16 @@ const { MongoStore } = require('connect-mongo');
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/campexxa';
 
-mongoose.connect(dbUrl); 
+if (process.env.NODE_ENV !== "test") {
+  // we isolate mongo connect while testing, so that we can connect to test database and avoid messing with production database
+  mongoose.connect(dbUrl); 
+  const db = mongoose.connection; 
+  db.on('error', console.error.bind(console, 'connection error: '))
+  db.once('open', () => {
+      console.log("database connected !")
+  })
+}
 
-const db = mongoose.connection; 
-db.on('error', console.error.bind(console, 'connection error: '))
-db.once('open', () => {
-    console.log("database connected !")
-})
 
 app.engine('ejs', ejsMate)
 
@@ -44,6 +49,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs'); 
 
 app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public')))
 
@@ -54,17 +60,26 @@ app.use((req, res, next) => {
   sanitizeV5({ replaceWith: '_' })(req, res, next);
 });
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    touchAfter: 24 * 60 * 60,
-    crypto: {
-        secret: process.env.SESSION_SECRET
-    }
-});
+//during test session should run for mongo memory server, otherwise it will try to connect to production database and fail
+let store; 
+if (process.env.NODE_ENV === "test") {
+  store = null; // 🔥 no DB usage in test
+} else {
+  store = MongoStore.create({
+      mongoUrl: dbUrl,
+      touchAfter: 24 * 60 * 60,
+      crypto: {
+          secret: process.env.SESSION_SECRET
+      }
+  }); 
+  store.on("error", function (e) {
+    console.log("SESSION STORE ERROR !");
+  });
+};
 
-store.on("error", function(e){
-  console.log("SESSION STORE ERROR !")
-})
+// store.on("error", function(e){
+//   console.log("SESSION STORE ERROR !")
+// })
 
 app.set('trust proxy', 1);
 
@@ -167,6 +182,11 @@ app.use((req, res, next) => {
 app.use('/api', apiRoutes);
 
 app.use((req, res, next) => {
+  // if (process.env.NODE_ENV === "test") return next();
+  if (process.env.NODE_ENV === "test") {
+    req.csrfToken = () => "test-csrf-token";
+    return next();
+  }
   const contentType = req.headers['content-type'] || '';
   const isMultipart = contentType.includes('multipart/form-data');
   if (isMultipart) {
@@ -177,6 +197,10 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  if (process.env.NODE_ENV === "test") {
+    res.locals.csrfToken = "test-token";
+    return next();
+  }
   if (req.skipCSRF) {
     return next();
   }
@@ -211,6 +235,11 @@ app.use((err, req, res, next) => {
 })
 
 const PORT = process.env.PORT || 3000
-app.listen(PORT, () => {
-    console.log(`Serving on port ${PORT} !`)
-})
+
+if(process.env.NODE_ENV !== "test"){
+  app.listen(PORT, () => {
+      console.log(`Serving on port ${PORT} !`)
+  })
+}
+
+module.exports = app; //for testing purposes

@@ -24,6 +24,12 @@ const loginLimiter = rateLimit({
   }
 });
 
+// conditional login limiter for testing routes in jest + supertest
+const conditionalLoginLimiter = (req, res, next) => {
+  if (process.env.NODE_ENV === "test") return next();
+  return loginLimiter(req, res, next);
+};
+
 router.route('/register')
     .get(users.renderRegister)
     .post(catchAsync (users.register))
@@ -31,10 +37,10 @@ router.route('/register')
 router.route('/login')
     .get(users.renderLogin)
     .post(
-        loginLimiter,
+        conditionalLoginLimiter,
         // validation to escape sql injection for ZAP testing
         (req, res, next) => {
-          let { username, password } = req.body;
+          let { username, password } = req.body || {};
 
           username = username?.trim();
           password = password?.trim();

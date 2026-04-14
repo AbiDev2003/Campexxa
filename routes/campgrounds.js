@@ -9,20 +9,25 @@ const upload = multer({storage})
 const csurf = require('csurf');
 const csrfProtection = csurf();
 
+// this is added for testing route purpose in jest+supertest
+const conditionalCSRF = (req, res, next) => {
+  if (process.env.NODE_ENV === "test") return next();
+  return csrfProtection(req, res, next);
+};
 router.route('/')
     .get(catchAsync(campgrounds.index))
-    .post(isLoggedIn, upload.array('image'), csrfProtection,validateCampground, catchAsync(campgrounds.createCampground))
+    .post(isLoggedIn, upload.array('image'), conditionalCSRF, validateCampground, catchAsync(campgrounds.createCampground))
 
 router.get('/new', isLoggedIn, campgrounds.renderNewForm)
 
-router.post('/:id/save', isLoggedIn, csrfProtection,catchAsync(campgrounds.saveCampground))
-router.post('/:id/unsave', isLoggedIn, csrfProtection, catchAsync(campgrounds.unsaveCampground))
+router.post('/:id/save', isLoggedIn, conditionalCSRF,catchAsync(campgrounds.saveCampground))
+router.post('/:id/unsave', isLoggedIn, conditionalCSRF, catchAsync(campgrounds.unsaveCampground))
 
 router.route('/:id')
     .get(catchAsync(campgrounds.showCampground))
-    .put(isLoggedIn, upload.array('image'), csrfProtection,validateCampground, isAuther, catchAsync(campgrounds.updateCampground))
-    .delete(isLoggedIn, csrfProtection, isAuther, catchAsync(campgrounds.deleteCampground))
+    .put(isLoggedIn, upload.array('image'), conditionalCSRF,validateCampground, isAuther, catchAsync(campgrounds.updateCampground))
+    .delete(isLoggedIn, conditionalCSRF, isAuther, catchAsync(campgrounds.deleteCampground))
 
-router.get('/:id/edit',isLoggedIn,csrfProtection, isAuther, catchAsync(campgrounds.renderEditForm))
+router.get('/:id/edit',isLoggedIn,conditionalCSRF, isAuther, catchAsync(campgrounds.renderEditForm))
 
 module.exports = router; 

@@ -27,7 +27,7 @@ module.exports.deleteReview = async (req, res, next) => {
     const {campId, reviewId} = req.params; 
     const currCampground = await Campground.findByIdAndUpdate(campId, { $pull: { reviews: reviewId }});
     await Review.findByIdAndDelete(reviewId); 
-    const redirectURL = req.body.redirectTo || `/campgrounds/${currCampground._id}/reviews`
+    const redirectURL = req.body?.redirectTo || `/campgrounds/${currCampground._id}/reviews`
     req.flash('success', 'Successfully deleted review !');
     res.redirect(redirectURL); 
 }
@@ -210,7 +210,7 @@ module.exports.updateReview = async (req, res) => {
         });
     }
     await review.save();
-    const redirectURL = req.body.redirectTo || `/campgrounds/${campId}/reviews`
+    const redirectURL = req.body?.redirectTo || `/campgrounds/${campId}/reviews`
     req.flash('success', 'Successfully updated review!');
     res.redirect(redirectURL);
 };

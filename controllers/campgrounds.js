@@ -281,7 +281,7 @@ module.exports.createCampground = async (req, res) => {
 
     // 1️⃣ Read seller-selected currency from dropdown
     const currencyCode = "INR";
-    const currencySymbol = "₹";
+    let currencySymbol = "₹";
     // 2️⃣ Generate symbol safely
     try {
         const formatter = new Intl.NumberFormat("en", {
@@ -319,7 +319,7 @@ module.exports.createCampground = async (req, res) => {
     campCacheTime = null;
     
     req.flash("success", "Successfully made a new campground!");
-    res.redirect(`campgrounds/${campground._id}`);
+    res.redirect(`/campgrounds/${campground._id}`);
 };
 
 module.exports.showCampground = async (req, res) => {
