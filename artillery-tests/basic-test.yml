@@ -1,0 +1,23 @@
+config:
+  target: "https://campexxa.onrender.com"
+  phases:
+    - duration: 60   # run test for 60 seconds
+      arrivalRate: 8 # 5 users per second
+
+  http:
+    timeout: 30  # increase timeout to 30s
+
+scenarios:
+  - name: "Basic page load test"
+    flow:
+      - get:
+          url: "/"
+      - think: 1
+      - get:
+          url: "/campgrounds"
+      # - think: 1
+      # - get:
+      #     url: "/campgrounds/69bec68f9a24d24effe723b6"
+      # - think: 1
+      # - get:
+      #     url: "/campgrounds/69bec68f9a24d24effe723b6/reviews"
