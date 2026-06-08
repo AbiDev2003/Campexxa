@@ -271,6 +271,7 @@ class node_layout,node_camp_cards,node_reviews_view,node_dashboard_view,node_aut
 class node_index_page,node_search_ui,node_load_more,node_maps_ui,node_profile_ui toneIndigo
 ```
 
+> 🗺️ [Open live architecture explorer](https://comprehensive-olive-vhbi3mlm.edgeone.app/) — clickable nodes link directly to source files.
 ## 📸 Screenshots
 
 <table>
