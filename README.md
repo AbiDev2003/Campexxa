@@ -124,7 +124,7 @@ The platform is designed with modular backend architecture, reusable frontend co
 
 ---
 
-## hfbfjvb
+## Project Architecture Diagram
 
 ```mermaid
 flowchart TD
